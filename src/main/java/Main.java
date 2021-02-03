@@ -27,16 +27,55 @@ public class Main {
         System.out.println(dataTypes);
 
         switch (dataTypes){
-            case "numeric numeric" -> System.out.println("numerics");
-            case "numeric vector" -> System.out.println("number and vector");
-            case "matrix numeric" ->{
-               //Matrix matrix = getMatrixFromString(inputDataToHandle.get(0).split(" ")[1]);
+            case "numeric numeric" -> {
+                System.out.println("numerics");
+                double number = Double.parseDouble(inputDataToHandle.get(0).split(" ")[1]);
+                double number2 = Double.parseDouble(inputDataToHandle.get(1).split(" ")[1]);
+                //handleNumericData(number, number2);
             }
-            case "vector matrix", "matrix vector" -> System.out.println("vector and matrix");
+            case "numeric vector" -> {
+                System.out.println("number and vector");
+                double number = Double.parseDouble(inputDataToHandle.get(0).split(" ")[1]);
+                VectorUtil vectorUtil = getVectorFromString(inputDataToHandle.get(1).split(" ")[1]);
+                System.out.println("Number");
+                System.out.println(number);
+                System.out.println("Vector");
+                System.out.println(vectorUtil);
+                //handleNumericVectorData(number, vectorUtil);
+            }
+            case "matrix matrix" -> {
+                MatrixUtil matrixUtil = getMatrixFromString(inputDataToHandle.get(0).split(" ")[1]);
+                MatrixUtil matrixUtil2 = getMatrixFromString(inputDataToHandle.get(1).split(" ")[1]);
+                System.out.println(matrixUtil);
+                System.out.println(matrixUtil2);
+                //handleMatrixData(matrixUtil, matrixUtil2);
+            }
+            case "matrix numeric" ->{
+                MatrixUtil matrixUtil = getMatrixFromString(inputDataToHandle.get(0).split(" ")[1]);
+                double number = Double.parseDouble(inputDataToHandle.get(1).split(" ")[1]);
+                System.out.println("Matrix");
+                System.out.println(matrixUtil);
+                System.out.println("Number");
+                System.out.println(number);
+                //handleMatrixNumeric
+            }
+            case "matrix vector" -> {
+                System.out.println("vector and matrix");
+                MatrixUtil matrixUtil = getMatrixFromString(inputDataToHandle.get(0).split(" ")[1]);
+                VectorUtil vectorUtil2 = getVectorFromString(inputDataToHandle.get(1).split(" ")[1]);
+                System.out.println(matrixUtil);
+                System.out.println(vectorUtil2);
+            }
+            case "vector vector" -> {
+                VectorUtil vectorUtil = getVectorFromString(inputDataToHandle.get(0).split(" ")[1]);
+                VectorUtil vectorUtil2 = getVectorFromString(inputDataToHandle.get(1).split(" ")[1]);
+                System.out.println(vectorUtil);
+                System.out.println(vectorUtil2);
+            }
         }
     }
 
-    public static Matrix getMatrixFromString(String s) {
+    public static MatrixUtil getMatrixFromString(String s) {
         String pattern = "[\\x5B\\x5D]";
         s = s.replaceAll(pattern, "");
         System.out.println(s);
@@ -69,10 +108,26 @@ public class Main {
                 }
             }
         }
+        return new MatrixUtil(matrixData);
+    }
 
-        print2dArray(matrixData);
+    private static VectorUtil getVectorFromString(String s) {
+        String pattern = "[\\x5B\\x5D]";
+        s = s.replaceAll(pattern, "");
+        String[] values = s.split(",", -1);
 
-        return new Matrix(matrixData);
+        int[] vectorData = new int[values.length];
+        Arrays.fill(vectorData, 0);
+
+        for(int i = 0; i < values.length; i++){
+            if(values[i].equals("")){
+                vectorData[i] = 0;
+            }else{
+                vectorData[i] = Integer.parseInt(values[i]);
+            }
+        }
+
+        return new VectorUtil(vectorData);
     }
 
     public static void print2dArray(int[][] arrays){
@@ -85,7 +140,7 @@ public class Main {
     }
 
     private static void handleMatrixAndNumberCase(List<String> inputDataToHandle){
-        
+
     }
 
     private static List<String> getInputData() throws InsufficientAmountOfDataException, IncorrectInputDataException {

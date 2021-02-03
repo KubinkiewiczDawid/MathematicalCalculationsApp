@@ -7,11 +7,13 @@ public class CalculatorTests {
     @Test
     public void matrixToStringTest(){
         int[][] matrixData = {{1,2}, {1,1}};
-        Matrix matrix = new Matrix(matrixData);
+        MatrixUtil matrixUtil = new MatrixUtil(matrixData);
+        MatrixUtil matrixUtilFromString = Main.getMatrixFromString("[1,2/1,1]");
 
-        Main.print2dArray(matrixData);
+        System.out.println(matrixUtil);
+        System.out.println(matrixUtilFromString);
 
-        assertEquals(matrix, Main.getMatrixFromString("[1,2/1,1]"));
+        assertEquals(matrixUtil, matrixUtilFromString);
     }
 
 }
