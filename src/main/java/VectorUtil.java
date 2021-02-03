@@ -1,11 +1,13 @@
 import java.util.Arrays;
 
-public class VectorUtil {
+public class VectorUtil implements Calculable{
     private int array[];
 
     public VectorUtil(int[] array) {
         this.array = array;
     }
+
+    public VectorUtil() {}
 
 
     public int[] getArray() {
@@ -34,5 +36,10 @@ public class VectorUtil {
         }
         vectorString.append("\n");
         return vectorString.toString();
+    }
+
+    @Override
+    public void makeCalculation(Object object) {
+        System.out.println("vector calculation");
     }
 }

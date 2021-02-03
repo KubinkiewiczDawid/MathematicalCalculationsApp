@@ -1,6 +1,7 @@
 import java.util.Arrays;
+import java.util.Scanner;
 
-public class MatrixUtil {
+public class MatrixUtil implements Calculable{
     private int columns;
     private int rows;
     private int array[][];
@@ -9,11 +10,7 @@ public class MatrixUtil {
         this.array = array;
     }
 
-    public MatrixUtil(int columns, int rows){
-        this.array = new int[columns][rows];
-        this.columns = columns;
-        this. rows = rows;
-    }
+    public MatrixUtil(){}
 
     public int[][] getArray() {
         return array;
@@ -43,5 +40,10 @@ public class MatrixUtil {
             matrixString.append("\n");
         }
         return matrixString.toString();
+    }
+
+    @Override
+    public void makeCalculation(Object object) {
+
     }
 }

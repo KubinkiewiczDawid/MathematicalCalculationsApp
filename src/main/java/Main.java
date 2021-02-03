@@ -1,13 +1,17 @@
 import Exceptions.IncorrectInputDataException;
 import Exceptions.InsufficientAmountOfDataException;
 
-import java.util.*;
+import java.lang.constant.Constable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-        List<String> inputDataToHandle = null;
+        List<Object> inputDataToHandle = null;
 
         System.out.println("Write two input data separated with space:");
         do {
@@ -22,62 +26,22 @@ public class Main {
         handleData(inputDataToHandle);
     }
 
-    private static void handleData(List<String> inputDataToHandle) {
-        String dataTypes = inputDataToHandle.get(0).split(" ")[0] + " " + inputDataToHandle.get(1).split(" ")[0];
-        System.out.println(dataTypes);
-
-        switch (dataTypes){
-            case "numeric numeric" -> {
-                System.out.println("numerics");
-                double number = Double.parseDouble(inputDataToHandle.get(0).split(" ")[1]);
-                double number2 = Double.parseDouble(inputDataToHandle.get(1).split(" ")[1]);
-                //handleNumericData(number, number2);
-            }
-            case "numeric vector" -> {
-                System.out.println("number and vector");
-                double number = Double.parseDouble(inputDataToHandle.get(0).split(" ")[1]);
-                VectorUtil vectorUtil = getVectorFromString(inputDataToHandle.get(1).split(" ")[1]);
-                System.out.println("Number");
-                System.out.println(number);
-                System.out.println("Vector");
-                System.out.println(vectorUtil);
-                //handleNumericVectorData(number, vectorUtil);
-            }
-            case "matrix matrix" -> {
-                MatrixUtil matrixUtil = getMatrixFromString(inputDataToHandle.get(0).split(" ")[1]);
-                MatrixUtil matrixUtil2 = getMatrixFromString(inputDataToHandle.get(1).split(" ")[1]);
-                System.out.println(matrixUtil);
-                System.out.println(matrixUtil2);
-                //handleMatrixData(matrixUtil, matrixUtil2);
-            }
-            case "matrix numeric" ->{
-                MatrixUtil matrixUtil = getMatrixFromString(inputDataToHandle.get(0).split(" ")[1]);
-                double number = Double.parseDouble(inputDataToHandle.get(1).split(" ")[1]);
-                System.out.println("Matrix");
-                System.out.println(matrixUtil);
-                System.out.println("Number");
-                System.out.println(number);
-                //handleMatrixNumeric
-            }
-            case "matrix vector" -> {
-                System.out.println("vector and matrix");
-                MatrixUtil matrixUtil = getMatrixFromString(inputDataToHandle.get(0).split(" ")[1]);
-                VectorUtil vectorUtil2 = getVectorFromString(inputDataToHandle.get(1).split(" ")[1]);
-                System.out.println(matrixUtil);
-                System.out.println(vectorUtil2);
-            }
-            case "vector vector" -> {
-                VectorUtil vectorUtil = getVectorFromString(inputDataToHandle.get(0).split(" ")[1]);
-                VectorUtil vectorUtil2 = getVectorFromString(inputDataToHandle.get(1).split(" ")[1]);
-                System.out.println(vectorUtil);
-                System.out.println(vectorUtil2);
-            }
+    private static void handleData(List<Object> inputDataToHandle) {
+       // inputDataToHandle.get(0).makeCalculation();
+        if(inputDataToHandle.get(0) instanceof NumberUtil ||
+                inputDataToHandle.get(0) instanceof MatrixUtil ||
+                inputDataToHandle.get(0) instanceof VectorUtil) {
+            System.out.println("doubles");
+           ((Calculable) inputDataToHandle.get(0)).makeCalculation(inputDataToHandle.get(1));
         }
     }
 
+    private static void handleNumericData(double x, double y){
+
+    }
+
     public static MatrixUtil getMatrixFromString(String s) {
-        String pattern = "[\\x5B\\x5D]";
-        s = s.replaceAll(pattern, "");
+        s = removeSquareBrackets(s);
         System.out.println(s);
         String[] rows = s.split("/", -1);
 
@@ -112,8 +76,7 @@ public class Main {
     }
 
     private static VectorUtil getVectorFromString(String s) {
-        String pattern = "[\\x5B\\x5D]";
-        s = s.replaceAll(pattern, "");
+        s = removeSquareBrackets(s);
         String[] values = s.split(",", -1);
 
         int[] vectorData = new int[values.length];
@@ -130,6 +93,12 @@ public class Main {
         return new VectorUtil(vectorData);
     }
 
+    private static String removeSquareBrackets(String s) {
+        String pattern = "[\\x5B\\x5D]";
+        s = s.replaceAll(pattern, "");
+        return s;
+    }
+
     public static void print2dArray(int[][] arrays){
         for(int[] array: arrays){
             for(int x : array){
@@ -139,17 +108,13 @@ public class Main {
         }
     }
 
-    private static void handleMatrixAndNumberCase(List<String> inputDataToHandle){
-
-    }
-
-    private static List<String> getInputData() throws InsufficientAmountOfDataException, IncorrectInputDataException {
+    private static List<Object> getInputData() throws InsufficientAmountOfDataException, IncorrectInputDataException {
         String inputData = scanner.nextLine();
 
         return validateInputData(inputData);
     }
 
-    private static List<String> validateInputData(String inputData) throws InsufficientAmountOfDataException, IncorrectInputDataException {
+    private static List<Object> validateInputData(String inputData) throws InsufficientAmountOfDataException, IncorrectInputDataException {
 
         String[] inputDataElements = inputData.split(" ");
 
@@ -157,58 +122,66 @@ public class Main {
             throw new InsufficientAmountOfDataException();
         }
 
-        List<String> inputDataToHandle = new ArrayList<>();
+        List<Object> inputDataToHandle = new ArrayList<>();
 
         for(String singleInputData : inputDataElements) {
             checkSingleData(inputDataToHandle, singleInputData);
         }
 
-        inputDataToHandle.sort(String::compareTo);
-
         return inputDataToHandle;
     }
 
-    private static void checkSingleData(List<String> inputDataToHandle, String singleInputData) throws IncorrectInputDataException {
-        String dataType = "";
-        if(isNumeric(singleInputData)){
-            dataType = "numeric";
-        } else if(isMatrix(singleInputData)){
-            dataType = "matrix";
-        } else if(isVector(singleInputData)){
-            dataType = "vector";
+    private static void checkSingleData(List<Object> inputDataToHandle, String singleInputData) throws IncorrectInputDataException {
+        Object object;
+        if(isNumeric(singleInputData) != null){
+            object = new NumberUtil(isNumeric(singleInputData));
+        } else if(isMatrix(singleInputData) != null){
+            object = isMatrix(singleInputData);
+        } else if(isVector(singleInputData) != null){
+            object = isVector(singleInputData);
         } else{
             throw new IncorrectInputDataException();
         }
-        inputDataToHandle.add(dataType + " " + singleInputData);
+        inputDataToHandle.add(object);
     }
 
-    private static boolean isNumeric(String data){
+    private static Double isNumeric(String data){
         Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
         if(pattern.matcher(data).matches()){
-            return true;
+            return Double.parseDouble(data);
         }
-        return false;
+        return null;
     }
 
-    private static boolean isMatrix(String data){
-        if(data.length() <= 3 || data.charAt(0) != '[' || data.charAt(data.length()-1) != ']' || !data.contains("/")) return false;
+    private static MatrixUtil isMatrix(String data){
+        if(data.length() <= 3 || data.charAt(0) != '[' || data.charAt(data.length()-1) != ']' || !data.contains("/")) return null;
 
         for(int i = 1; i < data.length()-1; i++){
-            if(data.charAt(i) != ',' && data.charAt(i) != '/' && !isNumeric(Character.toString(data.charAt(i)))){
-                return false;
+            if(data.charAt(i) != ',' && data.charAt(i) != '/' && isNumeric(Character.toString(data.charAt(i))) == null){
+                return null;
             }
         }
-        return true;
+        return getMatrixFromString(data);
     }
 
-    private static boolean isVector(String data){
-        if(data.length() <= 3 || data.charAt(0) != '[' || data.charAt(data.length()-1) != ']') return false;
+    private static VectorUtil isVector(String data){
+        if(data.length() <= 3 || data.charAt(0) != '[' || data.charAt(data.length()-1) != ']') return null;
 
         for(int i = 1; i < data.length()-1; i++){
-            if(data.charAt(i) != ',' && !isNumeric(Character.toString(data.charAt(i)))){
-                return false;
+            if(data.charAt(i) != ',' && isNumeric(Character.toString(data.charAt(i))) == null){
+                return null;
             }
         }
-        return true;
+        return getVectorFromString(data);
+    }
+
+    public static int getUserNumericInput(){
+        while(true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException  e) {
+                System.out.println("Sprobuj jeszcze raz");
+            }
+        }
     }
 }
