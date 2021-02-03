@@ -1,7 +1,6 @@
 import Exceptions.IncorrectInputDataException;
 import Exceptions.InsufficientAmountOfDataException;
 
-import java.lang.constant.Constable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +26,6 @@ public class Main {
     }
 
     private static void handleData(List<Object> inputDataToHandle) {
-       // inputDataToHandle.get(0).makeCalculation();
         if(inputDataToHandle.get(0) instanceof NumberUtil ||
                 inputDataToHandle.get(0) instanceof MatrixUtil ||
                 inputDataToHandle.get(0) instanceof VectorUtil) {
