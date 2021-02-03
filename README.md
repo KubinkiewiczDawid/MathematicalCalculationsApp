@@ -3,7 +3,7 @@
 Program wykonujący operacje matematyczne w zależności od podanych danych wejściowych.
 
 W pierwszej kolejności należy podać dane wejściowe oddzielając je od siebie spacją.
-Dana wejściowa może być: liczbą rzeczywistą, wektor lub macierz.
+Dana wejściowa może być: liczba rzeczywista, wektor lub macierz.
 
 Instrukcje dotyczące wprowadzania danych wejściowych:
 
