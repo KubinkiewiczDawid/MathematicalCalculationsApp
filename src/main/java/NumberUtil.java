@@ -1,12 +1,7 @@
 public class NumberUtil implements Calculable{
-    private double value;
-
-    public NumberUtil() {}
+    private final double value;
 
     public NumberUtil(double value){
-        this.value = value;
-    }
-    public void setValue(double value) {
         this.value = value;
     }
 
@@ -14,16 +9,12 @@ public class NumberUtil implements Calculable{
         return value;
     }
 
-    public double addNumbers(double x, double y){
-        return x + y;
-    }
-
     @Override
     public void makeCalculation(Calculable object) {
         if(object instanceof NumberUtil){
-            handleTwoNumbersCase((NumberUtil) object);
+            handleTwoNumbersCase(object);
         }else{
-            handleMatrixVectorCase((Calculable)object);
+            handleMatrixVectorCase(object);
         }
     }
 
@@ -42,7 +33,7 @@ public class NumberUtil implements Calculable{
         System.out.println(this.getValue() - ((NumberUtil)object).getValue());
     }
 
-    private void handleTwoNumbersCase(NumberUtil object) {
+    private void handleTwoNumbersCase(Calculable object) {
         boolean shouldContinue = false;
 
         do{
@@ -61,15 +52,15 @@ public class NumberUtil implements Calculable{
                 case 3 -> this.multiply(object);
                 case 4 -> {
                     try {
-                        divide(this.value, object.getValue());
+                        divide(this.value, ((NumberUtil)object).getValue());
                     }catch (ArithmeticException e){
                         System.out.print(e.getMessage());
                         System.out.println(", try again");
                         shouldContinue = true;
                     }
                 }
-                case 5 -> pow(this.value, object.getValue());
-                case 6 -> sqrRoot(this.value, object.getValue());
+                case 5 -> pow(this.value, ((NumberUtil)object).getValue());
+                case 6 -> sqrRoot(this.value, ((NumberUtil)object).getValue());
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");

@@ -1,17 +1,10 @@
 import java.util.Arrays;
 
 public class VectorUtil implements Calculable{
-    private int array[];
+    private final int[] array;
 
     public VectorUtil(int[] array) {
         this.array = array;
-    }
-
-    public VectorUtil() {}
-
-
-    public int[] getArray() {
-        return array;
     }
 
     @Override
@@ -40,8 +33,30 @@ public class VectorUtil implements Calculable{
 
     @Override
     public void makeCalculation(Calculable object) {
-        System.out.println("vector calculation");
-        System.out.println(this);
+        if(object instanceof VectorUtil){
+            handleTwoVectorsCase(object);
+        }
+    }
+
+    private void handleTwoVectorsCase(Calculable object) {
+        boolean shouldContinue = false;
+
+        do{
+            System.out.println("1. Summary");
+            System.out.println("2. Subtraction");
+            System.out.println();
+            System.out.println("0. Leave");
+
+            switch (Main.getUserNumericInput()){
+                case 1 -> this.sum(object);
+                case 2 -> this.subtract(object);
+                case 0 -> shouldContinue = false;
+                default -> {
+                    System.out.println("Invalid option, try again");
+                    shouldContinue = true;
+                }
+            }
+        }while(shouldContinue);
     }
 
     @Override
@@ -56,11 +71,23 @@ public class VectorUtil implements Calculable{
 
     @Override
     public void sum(Calculable object) {
+        if(object instanceof VectorUtil){
+            sumVectors((VectorUtil)object);
+        }else {
 
+        }
+        System.out.println();
     }
 
     @Override
     public void subtract(Calculable object) {
 
+    }
+
+    private void sumVectors(VectorUtil object) {
+        int longestVectorSize = Math.max(this.array.length, object.array.length);
+        for(int i = 0; i < longestVectorSize; i++){
+
+        }
     }
 }

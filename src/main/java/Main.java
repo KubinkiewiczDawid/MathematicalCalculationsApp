@@ -1,5 +1,7 @@
 import Exceptions.IncorrectInputDataException;
 import Exceptions.InsufficientAmountOfDataException;
+import Exceptions.TooBigMatrixException;
+import Exceptions.TooBigVectorExeption;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +18,7 @@ public class Main {
         do {
             try {
                 inputDataToHandle = getInputData();
-            } catch (InsufficientAmountOfDataException | IncorrectInputDataException e) {
+            } catch (InsufficientAmountOfDataException | IncorrectInputDataException | TooBigMatrixException | TooBigVectorExeption e) {
                 System.out.println(e.getMessage());
                 System.out.println("Try again");
             }
@@ -34,10 +36,12 @@ public class Main {
         }
     }
 
-    public static MatrixUtil getMatrixFromString(String s) {
+    public static MatrixUtil getMatrixFromString(String s) throws TooBigMatrixException {
         s = removeSquareBrackets(s);
-        System.out.println(s);
         String[] rows = s.split("/", -1);
+        if(rows.length > 4){
+            throw new TooBigMatrixException();
+        }
 
        int longestColumnSize = 0;
        for(String row : rows){
@@ -49,7 +53,9 @@ public class Main {
            if(columnsSize > longestColumnSize) longestColumnSize = columnsSize;
        }
 
-        System.out.println(rows.length + " - " + longestColumnSize);
+        if(longestColumnSize > 4){
+            throw new TooBigMatrixException();
+        }
 
         double[][] matrixData = new double[rows.length][longestColumnSize];
         for(double[] array : matrixData){
@@ -69,9 +75,13 @@ public class Main {
         return new MatrixUtil(matrixData);
     }
 
-    private static VectorUtil getVectorFromString(String s) {
+    private static VectorUtil getVectorFromString(String s) throws TooBigVectorExeption {
         s = removeSquareBrackets(s);
         String[] values = s.split(",", -1);
+
+        if(values.length > 4){
+            throw new TooBigVectorExeption();
+        }
 
         int[] vectorData = new int[values.length];
         Arrays.fill(vectorData, 0);
@@ -102,13 +112,13 @@ public class Main {
         }
     }
 
-    private static List<Object> getInputData() throws InsufficientAmountOfDataException, IncorrectInputDataException {
+    private static List<Object> getInputData() throws InsufficientAmountOfDataException, IncorrectInputDataException, TooBigMatrixException, TooBigVectorExeption {
         String inputData = scanner.nextLine();
 
         return validateInputData(inputData);
     }
 
-    private static List<Object> validateInputData(String inputData) throws InsufficientAmountOfDataException, IncorrectInputDataException {
+    private static List<Object> validateInputData(String inputData) throws InsufficientAmountOfDataException, IncorrectInputDataException, TooBigMatrixException, TooBigVectorExeption {
 
         String[] inputDataElements = inputData.split(" ");
 
@@ -125,7 +135,7 @@ public class Main {
         return inputDataToHandle;
     }
 
-    private static void checkSingleData(List<Object> inputDataToHandle, String singleInputData) throws IncorrectInputDataException {
+    private static void checkSingleData(List<Object> inputDataToHandle, String singleInputData) throws IncorrectInputDataException, TooBigMatrixException, TooBigVectorExeption {
         Object object;
         if(isNumeric(singleInputData) != null){
             object = new NumberUtil(isNumeric(singleInputData));
@@ -147,7 +157,7 @@ public class Main {
         return null;
     }
 
-    private static MatrixUtil isMatrix(String data){
+    private static MatrixUtil isMatrix(String data) throws TooBigMatrixException {
         if(data.length() <= 3 || data.charAt(0) != '[' || data.charAt(data.length()-1) != ']' || !data.contains("/")) return null;
 
         for(int i = 1; i < data.length()-1; i++){
@@ -158,7 +168,7 @@ public class Main {
         return getMatrixFromString(data);
     }
 
-    private static VectorUtil isVector(String data){
+    private static VectorUtil isVector(String data) throws TooBigVectorExeption {
         if(data.length() <= 2 || data.charAt(0) != '[' || data.charAt(data.length()-1) != ']') return null;
 
         for(int i = 1; i < data.length()-1; i++){
