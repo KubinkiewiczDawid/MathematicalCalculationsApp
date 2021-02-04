@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class NumberUtil implements Calculable{
     private double value;
 
@@ -21,10 +19,17 @@ public class NumberUtil implements Calculable{
     }
 
     @Override
-    public void makeCalculation(Object object) {
+    public void makeCalculation(Calculable object) {
         if(object instanceof NumberUtil){
             handleTwoNumbersCase((NumberUtil) object);
+        }else{
+            handleMatrixVectorCase((Calculable)object);
         }
+    }
+
+    @Override
+    public void multiply(Calculable object) {
+        System.out.println(this.getValue() * ((NumberUtil)object).getValue());
     }
 
     private void handleTwoNumbersCase(NumberUtil object) {
@@ -37,12 +42,13 @@ public class NumberUtil implements Calculable{
             System.out.println("4. Division");
             System.out.println("5. Exponentiation");
             System.out.println("6. Square root");
-            System.out.println("7. Leave");
+            System.out.println();
+            System.out.println("0. Leave");
 
             switch (Main.getUserNumericInput()){
-                case 1 -> summ(this.value, object.getValue());
+                case 1 -> sum(this.value, object.getValue());
                 case 2 -> subtract(this.value, object.getValue());
-                case 3 -> multiply(this.value, object.getValue());
+                case 3 -> this.multiply(object);
                 case 4 -> {
                     try {
                         divide(this.value, object.getValue());
@@ -54,7 +60,7 @@ public class NumberUtil implements Calculable{
                 }
                 case 5 -> pow(this.value, object.getValue());
                 case 6 -> sqrRoot(this.value, object.getValue());
-                case 7 -> shouldContinue = false;
+                case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
                     shouldContinue = true;
@@ -63,16 +69,34 @@ public class NumberUtil implements Calculable{
         }while(shouldContinue);
     }
 
-    private void summ(double x, double y) {
+    private void handleMatrixVectorCase(Calculable object) {
+        boolean shouldContinue = false;
+
+        do{
+            System.out.println("Multiplication is the only operation allowed here");
+            System.out.println("1. Multiplication");
+            System.out.println();
+            System.out.println("0. Leave");
+
+            switch (Main.getUserNumericInput()){
+                case 1 -> object.multiply(this);
+                case 0 -> shouldContinue = false;
+                default -> {
+                    System.out.println("Invalid option, try again");
+                    shouldContinue = true;
+                }
+            }
+        }while(shouldContinue);
+    }
+
+
+
+    private void sum(double x, double y) {
         System.out.println(x + y);
     }
 
     private void subtract(double x, double y) {
         System.out.println(x - y);
-    }
-
-    private void multiply(double x, double y) {
-        System.out.println(x * y);
     }
 
     private void divide(double x, double y)throws ArithmeticException{

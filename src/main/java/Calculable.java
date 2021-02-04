@@ -1,3 +1,4 @@
 public interface Calculable {
-    void makeCalculation(Object object);
+    void makeCalculation(Calculable object);
+    void multiply(Calculable object);
 }

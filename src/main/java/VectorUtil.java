@@ -39,7 +39,18 @@ public class VectorUtil implements Calculable{
     }
 
     @Override
-    public void makeCalculation(Object object) {
+    public void makeCalculation(Calculable object) {
         System.out.println("vector calculation");
+    }
+
+    @Override
+    public void multiply(Calculable object) {
+        if(object instanceof NumberUtil){
+            for(int i = 0; i < array.length; i++){
+                array[i] *= ((NumberUtil) object).getValue();
+            }
+        }
+
+        System.out.println(this);
     }
 }

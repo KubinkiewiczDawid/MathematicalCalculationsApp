@@ -30,7 +30,7 @@ public class Main {
                 inputDataToHandle.get(0) instanceof MatrixUtil ||
                 inputDataToHandle.get(0) instanceof VectorUtil) {
             System.out.println("doubles");
-           ((Calculable) inputDataToHandle.get(0)).makeCalculation(inputDataToHandle.get(1));
+           ((Calculable) inputDataToHandle.get(0)).makeCalculation((Calculable) inputDataToHandle.get(1));
         }
     }
 
@@ -55,8 +55,8 @@ public class Main {
 
         System.out.println(rows.length + " - " + longestColumnSize);
 
-        int[][] matrixData = new int[rows.length][longestColumnSize];
-        for(int[] array : matrixData){
+        double[][] matrixData = new double[rows.length][longestColumnSize];
+        for(double[] array : matrixData){
             Arrays.fill(array, 0);
         }
 
