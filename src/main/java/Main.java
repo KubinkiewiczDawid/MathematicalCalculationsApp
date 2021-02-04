@@ -34,10 +34,6 @@ public class Main {
         }
     }
 
-    private static void handleNumericData(double x, double y){
-
-    }
-
     public static MatrixUtil getMatrixFromString(String s) {
         s = removeSquareBrackets(s);
         System.out.println(s);
@@ -163,7 +159,7 @@ public class Main {
     }
 
     private static VectorUtil isVector(String data){
-        if(data.length() <= 3 || data.charAt(0) != '[' || data.charAt(data.length()-1) != ']') return null;
+        if(data.length() <= 2 || data.charAt(0) != '[' || data.charAt(data.length()-1) != ']') return null;
 
         for(int i = 1; i < data.length()-1; i++){
             if(data.charAt(i) != ',' && isNumeric(Character.toString(data.charAt(i))) == null){

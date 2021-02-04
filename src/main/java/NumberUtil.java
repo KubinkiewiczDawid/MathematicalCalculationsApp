@@ -32,6 +32,16 @@ public class NumberUtil implements Calculable{
         System.out.println(this.getValue() * ((NumberUtil)object).getValue());
     }
 
+    @Override
+    public void sum(Calculable object) {
+        System.out.println(this.getValue() + ((NumberUtil)object).getValue());
+    }
+
+    @Override
+    public void subtract(Calculable object) {
+        System.out.println(this.getValue() - ((NumberUtil)object).getValue());
+    }
+
     private void handleTwoNumbersCase(NumberUtil object) {
         boolean shouldContinue = false;
 
@@ -46,8 +56,8 @@ public class NumberUtil implements Calculable{
             System.out.println("0. Leave");
 
             switch (Main.getUserNumericInput()){
-                case 1 -> sum(this.value, object.getValue());
-                case 2 -> subtract(this.value, object.getValue());
+                case 1 -> this.sum(object);
+                case 2 -> this.subtract(object);
                 case 3 -> this.multiply(object);
                 case 4 -> {
                     try {
@@ -87,16 +97,6 @@ public class NumberUtil implements Calculable{
                 }
             }
         }while(shouldContinue);
-    }
-
-
-
-    private void sum(double x, double y) {
-        System.out.println(x + y);
-    }
-
-    private void subtract(double x, double y) {
-        System.out.println(x - y);
     }
 
     private void divide(double x, double y)throws ArithmeticException{

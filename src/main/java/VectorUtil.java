@@ -41,6 +41,7 @@ public class VectorUtil implements Calculable{
     @Override
     public void makeCalculation(Calculable object) {
         System.out.println("vector calculation");
+        System.out.println(this);
     }
 
     @Override
@@ -50,7 +51,16 @@ public class VectorUtil implements Calculable{
                 array[i] *= ((NumberUtil) object).getValue();
             }
         }
-
         System.out.println(this);
+    }
+
+    @Override
+    public void sum(Calculable object) {
+
+    }
+
+    @Override
+    public void subtract(Calculable object) {
+
     }
 }

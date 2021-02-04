@@ -46,7 +46,7 @@ public class MatrixUtil implements Calculable{
 
     @Override
     public void makeCalculation(Calculable object) {
-
+        printMatrix();
     }
 
     @Override
@@ -61,7 +61,17 @@ public class MatrixUtil implements Calculable{
         System.out.println(this);
     }
 
-    public void printMatrix(){
+    @Override
+    public void sum(Calculable object) {
 
+    }
+
+    @Override
+    public void subtract(Calculable object) {
+
+    }
+
+    public void printMatrix(){
+        System.out.println(this);
     }
 }
