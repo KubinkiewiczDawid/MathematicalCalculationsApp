@@ -1,3 +1,5 @@
+import Exceptions.IncorrectDataLength;
+
 public class NumberUtil implements Calculable{
     private final double value;
 
@@ -10,7 +12,7 @@ public class NumberUtil implements Calculable{
     }
 
     @Override
-    public void makeCalculation(Calculable object) {
+    public void makeCalculation(Calculable object) throws IncorrectDataLength {
         if(object instanceof NumberUtil){
             handleTwoNumbersCase(object);
         }else{
@@ -19,8 +21,12 @@ public class NumberUtil implements Calculable{
     }
 
     @Override
-    public void multiply(Calculable object) {
-        System.out.println(this.getValue() * ((NumberUtil)object).getValue());
+    public void multiply(Calculable object) throws IncorrectDataLength {
+        if(object instanceof NumberUtil) {
+            System.out.println(this.getValue() * ((NumberUtil) object).getValue());
+        }else if(object instanceof MatrixUtil){
+            object.multiply(this);
+        }
     }
 
     @Override
@@ -33,7 +39,7 @@ public class NumberUtil implements Calculable{
         System.out.println(this.getValue() - ((NumberUtil)object).getValue());
     }
 
-    private void handleTwoNumbersCase(Calculable object) {
+    private void handleTwoNumbersCase(Calculable object) throws IncorrectDataLength {
         boolean shouldContinue = false;
 
         do{
@@ -70,7 +76,7 @@ public class NumberUtil implements Calculable{
         }while(shouldContinue);
     }
 
-    private void handleMatrixVectorCase(Calculable object) {
+    private void handleMatrixVectorCase(Calculable object) throws IncorrectDataLength {
         boolean shouldContinue = false;
 
         do{

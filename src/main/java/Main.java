@@ -1,7 +1,4 @@
-import Exceptions.IncorrectInputDataException;
-import Exceptions.InsufficientAmountOfDataException;
-import Exceptions.TooBigMatrixException;
-import Exceptions.TooBigVectorExeption;
+import Exceptions.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,69 +29,12 @@ public class Main {
                 inputDataToHandle.get(0) instanceof MatrixUtil ||
                 inputDataToHandle.get(0) instanceof VectorUtil) {
             System.out.println("doubles");
-           ((Calculable) inputDataToHandle.get(0)).makeCalculation((Calculable) inputDataToHandle.get(1));
-        }
-    }
-
-    public static MatrixUtil getMatrixFromString(String s) throws TooBigMatrixException {
-        s = removeSquareBrackets(s);
-        String[] rows = s.split("/", -1);
-        if(rows.length > 4){
-            throw new TooBigMatrixException();
-        }
-
-       int longestColumnSize = 0;
-       for(String row : rows){
-           String[] columns = row.split(",", -1);
-           int columnsSize = 0;
-           for(String x : columns){
-               columnsSize++;
-           }
-           if(columnsSize > longestColumnSize) longestColumnSize = columnsSize;
-       }
-
-        if(longestColumnSize > 4){
-            throw new TooBigMatrixException();
-        }
-
-        double[][] matrixData = new double[rows.length][longestColumnSize];
-        for(double[] array : matrixData){
-            Arrays.fill(array, 0);
-        }
-
-        for(int i = 0; i < rows.length; i++){
-            String[] columns = rows[i].split(",", -1);
-            for(int j = 0; j < columns.length; j++){
-                if(columns[j].equals("")){
-                    matrixData[i][j] = 0;
-                }else{
-                    matrixData[i][j] = Integer.parseInt(columns[j]);
-                }
+            try {
+                ((Calculable) inputDataToHandle.get(0)).makeCalculation((Calculable) inputDataToHandle.get(1));
+            } catch (IncorrectDataLength e) {
+                System.out.println(e.getMessage());
             }
         }
-        return new MatrixUtil(matrixData);
-    }
-
-    private static VectorUtil getVectorFromString(String s) throws TooBigVectorExeption {
-        s = removeSquareBrackets(s);
-        String[] values = s.split(",", -1);
-
-        if(values.length > 4){
-            throw new TooBigVectorExeption();
-        }
-
-        int[] vectorData = new int[values.length];
-        Arrays.fill(vectorData, 0);
-
-        for(int i = 0; i < values.length; i++){
-            if(values[i].equals("")){
-                vectorData[i] = 0;
-            }else{
-                vectorData[i] = Integer.parseInt(values[i]);
-            }
-        }
-
-        return new VectorUtil(vectorData);
     }
 
     private static String removeSquareBrackets(String s) {
@@ -168,6 +108,45 @@ public class Main {
         return getMatrixFromString(data);
     }
 
+    public static MatrixUtil getMatrixFromString(String s) throws TooBigMatrixException {
+        s = removeSquareBrackets(s);
+        String[] rows = s.split("/", -1);
+        if(rows.length > 4){
+            throw new TooBigMatrixException();
+        }
+
+        int longestColumnSize = 0;
+        for(String row : rows){
+            String[] columns = row.split(",", -1);
+            int columnsSize = 0;
+            for(String x : columns){
+                columnsSize++;
+            }
+            if(columnsSize > longestColumnSize) longestColumnSize = columnsSize;
+        }
+
+        if(longestColumnSize > 4){
+            throw new TooBigMatrixException();
+        }
+
+        double[][] matrixData = new double[rows.length][longestColumnSize];
+        for(double[] array : matrixData){
+            Arrays.fill(array, 0);
+        }
+
+        for(int i = 0; i < rows.length; i++){
+            String[] columns = rows[i].split(",", -1);
+            for(int j = 0; j < columns.length; j++){
+                if(columns[j].equals("")){
+                    matrixData[i][j] = 0;
+                }else{
+                    matrixData[i][j] = Integer.parseInt(columns[j]);
+                }
+            }
+        }
+        return new MatrixUtil(matrixData);
+    }
+
     private static VectorUtil isVector(String data) throws TooBigVectorExeption {
         if(data.length() <= 2 || data.charAt(0) != '[' || data.charAt(data.length()-1) != ']') return null;
 
@@ -177,6 +156,28 @@ public class Main {
             }
         }
         return getVectorFromString(data);
+    }
+
+    private static VectorUtil getVectorFromString(String s) throws TooBigVectorExeption {
+        s = removeSquareBrackets(s);
+        String[] values = s.split(",", -1);
+
+        if(values.length > 4){
+            throw new TooBigVectorExeption();
+        }
+
+        double[] vectorData = new double[values.length];
+        Arrays.fill(vectorData, 0);
+
+        for(int i = 0; i < values.length; i++){
+            if(values[i].equals("")){
+                vectorData[i] = 0;
+            }else{
+                vectorData[i] = Integer.parseInt(values[i]);
+            }
+        }
+
+        return new VectorUtil(vectorData);
     }
 
     public static int getUserNumericInput(){

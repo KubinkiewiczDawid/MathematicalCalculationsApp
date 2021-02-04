@@ -1,6 +1,8 @@
+import Exceptions.IncorrectDataLength;
+
 public interface Calculable {
-    void makeCalculation(Calculable object);
-    void multiply(Calculable object);
-    void sum(Calculable object);
-    void subtract(Calculable object);
+    void makeCalculation(Calculable object) throws IncorrectDataLength;
+    void multiply(Calculable object) throws IncorrectDataLength;
+    void sum(Calculable object) throws IncorrectDataLength;
+    void subtract(Calculable object) throws IncorrectDataLength;
 }
