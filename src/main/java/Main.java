@@ -176,7 +176,7 @@ public class Main {
             if(values[i].equals("")){
                 vectorData[i] = 0;
             }else{
-                vectorData[i] = Integer.parseInt(values[i]);
+                vectorData[i] = Double.parseDouble(values[i]);
             }
         }
 
