@@ -36,7 +36,7 @@ public class MatrixUtil implements Calculable{
         if(object instanceof NumberUtil || object instanceof VectorUtil){
             handleNumberVectorCase(object);
         }else{
-            handleMatrixCase(object);
+            handleMatricesCase(object);
         }
     }
 
@@ -60,7 +60,7 @@ public class MatrixUtil implements Calculable{
         }while(shouldContinue);
     }
 
-    private void handleMatrixCase(Calculable object) throws IncorrectDataLength {
+    private void handleMatricesCase(Calculable object) throws IncorrectDataLength {
         boolean shouldContinue = false;
 
         do{
