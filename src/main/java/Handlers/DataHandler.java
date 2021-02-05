@@ -5,7 +5,7 @@ import Utils.Calculable;
 import java.io.*;
 
 public class DataHandler {
-    private static final String FILE_PATH = "C:\\"; //TODO: make changable by user
+    private static final String FILE_PATH = "C:\\CalculatorData\\"; //TODO: make changable by user
     private static final String FILE_NAME = "historia_obliczen.txt";
     private final static int MAX_AMOUNT_OF_DATA = 50;
     private static File logFile;
@@ -13,6 +13,9 @@ public class DataHandler {
     public static void createFile(){
         logFile = new File(FILE_PATH, FILE_NAME);
         try {
+            if(!logFile.getParentFile().exists()) {
+                logFile.getParentFile().mkdir();
+            }
             if(!logFile.exists()){
                 logFile.createNewFile();
             }
