@@ -34,7 +34,7 @@ public class CalculatorTests {
     @Test
     public void matrixFromStringTest(){
         double[][] matrixData = {{1,2}, {1,1}};
-        MatrixUtil matrixUtil = new MatrixUtil(matrixData,null);
+        MatrixUtil matrixUtil = new MatrixUtil(matrixData);
         MatrixUtil matrixUtilFromString = null;
         try {
             matrixUtilFromString = (MatrixUtil) getMatrixFromString.invoke(calculator, "[1,2/1,1]");//getMatrixFromString();
@@ -48,7 +48,7 @@ public class CalculatorTests {
     @Test
     public void vectorFromStringTest(){
         double[] vectorData = {1,2.1,0,5.1};
-        VectorUtil vectorUtil = new VectorUtil(vectorData, null);
+        VectorUtil vectorUtil = new VectorUtil(vectorData);
         VectorUtil vectorUtilFromString = null;
         try {
             vectorUtilFromString = (VectorUtil) getVectorFromString.invoke(calculator, "[1,2.1,,5.1]");//getMatrixFromString();
@@ -83,9 +83,7 @@ public class CalculatorTests {
 
             MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(calculator, "[3,6/3,6]");
 
-            DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
-
-            assertEquals(matrix1.multiply(matrix2, mockedDataHandler), correctResult);
+            assertEquals(matrix1.multiply(matrix2), correctResult);
         } catch (IncorrectDataLength | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -99,9 +97,7 @@ public class CalculatorTests {
 
             MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,1,/6,2,3/,10,4]");
 
-            DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
-
-            assertEquals(matrix1.sum(matrix2, mockedDataHandler), correctResult);
+            assertEquals(matrix1.sum(matrix2), correctResult);
         } catch (IncorrectDataLength | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -115,9 +111,7 @@ public class CalculatorTests {
 
             MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,5.1,/,5.1,10.2/,5.1,10.2]");
 
-            DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
-
-            assertEquals(matrix.multiply(number, mockedDataHandler), correctResult);
+            assertEquals(matrix.multiply(number), correctResult);
         } catch (IllegalAccessException | InvocationTargetException | IncorrectDataLength e) {
             e.printStackTrace();
         }
@@ -131,9 +125,7 @@ public class CalculatorTests {
 
             MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,5.1,/,5.1,10.2/,5.1,10.2]");
 
-            DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
-
-            assertEquals(number.multiply(matrix, mockedDataHandler), correctResult);
+            assertEquals(number.multiply(matrix), correctResult);
         } catch (IllegalAccessException | InvocationTargetException | IncorrectDataLength e) {
             e.printStackTrace();
         }
@@ -147,9 +139,7 @@ public class CalculatorTests {
 
             VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(calculator, "[2.6,3,]");
 
-            DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
-
-            assertEquals(matrix.multiply(vector, mockedDataHandler), correctResult);
+            assertEquals(matrix.multiply(vector), correctResult);
         } catch (IllegalAccessException | InvocationTargetException | IncorrectDataLength e) {
             e.printStackTrace();
         }
@@ -163,9 +153,7 @@ public class CalculatorTests {
 
             VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(calculator, "[2.6,3,]");
 
-            DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
-
-            assertEquals(vector.multiply(matrix, mockedDataHandler), correctResult);
+            assertEquals(vector.multiply(matrix), correctResult);
         } catch (IllegalAccessException | InvocationTargetException | IncorrectDataLength e) {
             e.printStackTrace();
         }
@@ -179,9 +167,7 @@ public class CalculatorTests {
 
             VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(calculator, "[13.26,5.1,]");
 
-            DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
-
-            assertEquals(vector.multiply(number, mockedDataHandler), correctResult);
+            assertEquals(vector.multiply(number), correctResult);
         } catch (IllegalAccessException | InvocationTargetException | IncorrectDataLength e) {
             e.printStackTrace();
         }

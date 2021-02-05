@@ -10,18 +10,9 @@ import java.util.Objects;
 
 public class NumberUtil implements Calculable {
     private double value;
-    private final DataHandler dataHandler;
-    private UserInput userInput;
 
     public NumberUtil(double value){
         this.value = value;
-        this.dataHandler = null;
-    }
-
-    public NumberUtil(double value, DataHandler dataHandler){
-        this.value = value;
-        this.dataHandler = dataHandler;
-        this.userInput = new UserInput();
     }
 
     public double getValue() {
@@ -38,34 +29,25 @@ public class NumberUtil implements Calculable {
     }
 
     @Override
-    public Calculable multiply(Calculable object, DataHandler dataHandler) throws IncorrectDataLength {
+    public Calculable multiply(Calculable object) throws IncorrectDataLength {
         if(object instanceof MatrixUtil | object instanceof VectorUtil){
-            return object.multiply(this, dataHandler);
+            return object.multiply(this);
         }
-        return numbersMultiply((NumberUtil) object, dataHandler);
+        return numbersMultiply((NumberUtil) object);
     }
 
-    private NumberUtil numbersMultiply(NumberUtil object, DataHandler dataHandler) {
-        dataHandler.writeCalculationObjects(this, object, '*');
-        this.value *= object.getValue();
-        dataHandler.writeCalculationResult(this);
-        return this;
+    private NumberUtil numbersMultiply(NumberUtil object) {
+        return new NumberUtil(this.value * object.getValue());
     }
 
     @Override
-    public Calculable sum(Calculable object, DataHandler dataHandler) {
-        dataHandler.writeCalculationObjects(this, object, '+');
-        this.value += ((NumberUtil) object).getValue();
-        dataHandler.writeCalculationResult(this);
-        return this;
+    public Calculable sum(Calculable object) {
+        return new NumberUtil(this.value + ((NumberUtil) object).getValue());
     }
 
     @Override
-    public Calculable subtract(Calculable object, DataHandler dataHandler) {
-        dataHandler.writeCalculationObjects(this, object, '-');
-        this.value -= ((NumberUtil) object).getValue();
-        dataHandler.writeCalculationResult(this);
-        return this;
+    public Calculable subtract(Calculable object) {
+        return new NumberUtil(this.value - ((NumberUtil) object).getValue());
     }
 
     private void handleTwoNumbersCase(Calculable object) throws IncorrectDataLength {
@@ -81,21 +63,21 @@ public class NumberUtil implements Calculable {
             System.out.println();
             System.out.println("0. Leave");
 
-            switch (userInput.getUserNumericInput()){
-                case 1 -> this.sum(object, this.dataHandler);
-                case 2 -> this.subtract(object, this.dataHandler);
-                case 3 -> this.multiply(object, this.dataHandler);
+            switch (UserInput.getUserNumericInput()){
+                case 1 -> DataHandler.writeCalculation(this, object, this.sum(object), '+');
+                case 2 -> DataHandler.writeCalculation(this, object, this.subtract(object), '-');
+                case 3 -> DataHandler.writeCalculation(this, object, this.multiply(object), '*');
                 case 4 -> {
                     try {
-                        divide((NumberUtil)object, this.dataHandler);
+                        DataHandler.writeCalculation(this, object, divide((NumberUtil)object), '/');
                     }catch (ArithmeticException e){
                         System.out.print(e.getMessage());
                         System.out.println(", try again");
                         shouldContinue = true;
                     }
                 }
-                case 5 -> pow((NumberUtil)object, this.dataHandler);
-                case 6 -> sqrRoot(this.dataHandler);
+                case 5 -> DataHandler.writeCalculation(this, object, pow((NumberUtil)object), '^');
+                case 6 -> DataHandler.writeCalculation(this, object, sqrRoot((NumberUtil)object), '/');
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -114,8 +96,8 @@ public class NumberUtil implements Calculable {
             System.out.println();
             System.out.println("0. Leave");
 
-            switch (userInput.getUserNumericInput()){
-                case 1 -> object.multiply(this, this.dataHandler);
+            switch (UserInput.getUserNumericInput()){
+                case 1 -> DataHandler.writeCalculation(object, this, object.multiply(this), '*');
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -125,36 +107,28 @@ public class NumberUtil implements Calculable {
         }while(shouldContinue);
     }
 
-    private Calculable divide(NumberUtil object, DataHandler dataHandler)throws ArithmeticException{
+    private Calculable divide(NumberUtil object)throws ArithmeticException{
         if(object.value != 0) {
-            dataHandler.writeCalculationObjects(this, object, '/');
             this.value = this.value / object.value;
-            dataHandler.writeCalculationResult(this);
             return this;
         }else{
             throw new ArithmeticException("You can't divide by 0");
         }
     }
 
-    private Calculable pow(NumberUtil object, DataHandler dataHandler) {
+    private Calculable pow(NumberUtil object) {
         if(object.value < 0 || object.value > 128) {
             System.out.println("Size of exponent is not supported,");
             do {
                 System.out.println("please enter a number between 0 and 128");
-                object.value = userInput.getUserNumericInput();
+                object.value = UserInput.getUserNumericInput();
             } while (object.value >= 0 && object.value <= 128);
         }
-        dataHandler.writeCalculationObjects(this, object, '^');
-        this.value = Math.pow(this.value, object.value);
-        dataHandler.writeCalculationResult(this);
-        return this;
+        return new NumberUtil(Math.pow(this.value, object.value));
     }
 
-    private Calculable sqrRoot(DataHandler dataHandler) {
-        dataHandler.writeCalculationObjects(this, new NumberUtil(2), '√');
-        this.value = Math.sqrt(this.value);
-        dataHandler.writeCalculationResult(this);
-        return this;
+    private Calculable sqrRoot(NumberUtil object) {
+        return new NumberUtil(Math.pow(this.value, 1.0 / object.value));
     }
 
     @Override

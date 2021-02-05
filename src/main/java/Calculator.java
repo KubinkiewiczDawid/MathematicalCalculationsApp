@@ -13,10 +13,9 @@ import java.util.regex.Pattern;
 
 public class Calculator {
     UserInput userInput = new UserInput();
-    DataHandler dataHandler = new DataHandler();
 
     public void startCalculator(){
-        dataHandler.createFile();
+        DataHandler.createFile();
         while(true) {
             List<Object> inputDataToHandle = null;
             System.out.println("Write two input data separated with space:");
@@ -77,7 +76,7 @@ public class Calculator {
     private void checkSingleData(List<Object> inputDataToHandle, String singleInputData) throws IncorrectInputDataException, TooBigMatrixException, TooBigVectorExeption {
         Object object;
         if(isNumeric(singleInputData) != null){
-            object = new NumberUtil(isNumeric(singleInputData), dataHandler);
+            object = new NumberUtil(isNumeric(singleInputData));
         } else if(isMatrix(singleInputData) != null){
             object = isMatrix(singleInputData);
         } else if(isVector(singleInputData) != null){
@@ -143,7 +142,7 @@ public class Calculator {
                 }
             }
         }
-        return new MatrixUtil(matrixData, dataHandler);
+        return new MatrixUtil(matrixData);
     }
 
     private VectorUtil isVector(String s) throws TooBigVectorExeption {
@@ -176,6 +175,6 @@ public class Calculator {
             }
         }
 
-        return new VectorUtil(vectorData, dataHandler);
+        return new VectorUtil(vectorData);
     }
 }

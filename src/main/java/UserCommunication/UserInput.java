@@ -4,20 +4,16 @@ import java.util.Scanner;
 
 public class UserInput {
 
-    Scanner scanner;
+    private static Scanner scanner = new Scanner(System.in);
 
-    public UserInput(){
-        this.scanner = new Scanner(System.in);
-    }
-
-    public String getUserDataInput(){
+    public static String getUserDataInput(){
         return scanner.nextLine();
     }
 
-    public int getUserNumericInput(){
+    public static int getUserNumericInput(){
         while(true) {
             try {
-                return Integer.parseInt(this.scanner.nextLine());
+                return Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException  e) {
                 System.out.println("Sprobuj jeszcze raz");
             }

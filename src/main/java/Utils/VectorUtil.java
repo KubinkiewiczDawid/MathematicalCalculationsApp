@@ -10,13 +10,9 @@ import java.util.Arrays;
 
 public class VectorUtil implements Calculable {
     private double[] array;
-    private final DataHandler dataHandler;
-    private UserInput userInput;
 
-    public VectorUtil(double[] array, DataHandler dataHandler) {
+    public VectorUtil(double[] array) {
         this.array = array;
-        this.dataHandler = dataHandler;
-        this.userInput = new UserInput();
     }
 
     @Override
@@ -37,9 +33,9 @@ public class VectorUtil implements Calculable {
             System.out.println();
             System.out.println("0. Leave");
 
-            switch (userInput.getUserNumericInput()){
-                case 1 -> this.sum(object, this.dataHandler);
-                case 2 -> this.subtract(object, this.dataHandler);
+            switch (UserInput.getUserNumericInput()){
+                case 1 -> DataHandler.writeCalculation(this, object, this.sum(object), '+');
+                case 2 -> DataHandler.writeCalculation(this, object, this.subtract(object), '-');
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -58,8 +54,8 @@ public class VectorUtil implements Calculable {
             System.out.println();
             System.out.println("0. Leave");
 
-            switch (userInput.getUserNumericInput()){
-                case 1 -> this.multiply(object, this.dataHandler);
+            switch (UserInput.getUserNumericInput()){
+                case 1 -> DataHandler.writeCalculation(object, this, this.multiply(object), '*');
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -70,11 +66,11 @@ public class VectorUtil implements Calculable {
     }
 
     @Override
-    public Calculable multiply(Calculable object, DataHandler dataHandler) throws IncorrectDataLength {
-        dataHandler.writeCalculationObjects(this, object, '*');
+    public Calculable multiply(Calculable object) throws IncorrectDataLength {
+        VectorUtil vectorUtil = new VectorUtil(this.array);
         if(object instanceof NumberUtil){
-            for(int i = 0; i < this.array.length; i++){
-                this.array[i] *= ((NumberUtil) object).getValue();
+            for(int i = 0; i < vectorUtil.array.length; i++){
+                vectorUtil.array[i] *= ((NumberUtil) object).getValue();
             }
         }else if(object instanceof MatrixUtil){
             int rows = ((MatrixUtil) object).getArray().length;
@@ -91,55 +87,50 @@ public class VectorUtil implements Calculable {
                 for(int column = 0; column < columns; column++){
                     double value = ((MatrixUtil) object).getArray()[row][column];
                     sum += value
-                            * this.array[row];
+                            * vectorUtil.array[row];
                 }
                 result[row] = sum;
             }
-            this.array = result;
+            vectorUtil.array = result;
         }
-        dataHandler.writeCalculationResult(this);
-        return this;
+        return vectorUtil;
     }
 
     @Override
-    public Calculable sum(Calculable object, DataHandler dataHandler) {
-        int largestVectorSize = this.array.length > ((VectorUtil)object).array.length? this.array.length : ((VectorUtil)object).array.length;
+    public Calculable sum(Calculable object) {
+        VectorUtil vectorUtil = new VectorUtil(this.array);
+        int largestVectorSize = vectorUtil.array.length > ((VectorUtil)object).array.length? vectorUtil.array.length : ((VectorUtil)object).array.length;
         double[] firstVectorValues = new double[largestVectorSize];
         double[] secondVectorValues = new double[largestVectorSize];
 
-        System.arraycopy(this.array, 0, firstVectorValues, 0, this.array.length);
+        System.arraycopy(vectorUtil.array, 0, firstVectorValues, 0, vectorUtil.array.length);
         System.arraycopy(((VectorUtil)object).array, 0, secondVectorValues, 0, ((VectorUtil)object).array.length);
 
         for(int i = 0; i < largestVectorSize; i++){
             firstVectorValues[i] += secondVectorValues[i];
         }
 
-        dataHandler.writeCalculationObjects(this, object, '+');
+        vectorUtil.array = firstVectorValues;
 
-        this.array = firstVectorValues;
-
-        dataHandler.writeCalculationResult(this);
         return this;
     }
 
     @Override
-    public Calculable subtract(Calculable object, DataHandler dataHandler) {
-        int largestVectorSize = Math.max(this.array.length, ((VectorUtil) object).array.length);
+    public Calculable subtract(Calculable object) {
+        VectorUtil vectorUtil = new VectorUtil(this.array);
+        int largestVectorSize = Math.max(vectorUtil.array.length, ((VectorUtil) object).array.length);
         double[] firstVectorValues = new double[largestVectorSize];
         double[] secondVectorValues = new double[largestVectorSize];
 
-        System.arraycopy(this.array, 0, firstVectorValues, 0, this.array.length);
+        System.arraycopy(vectorUtil.array, 0, firstVectorValues, 0, vectorUtil.array.length);
         System.arraycopy(((VectorUtil)object).array, 0, secondVectorValues, 0, ((VectorUtil)object).array.length);
 
         for(int i = 0; i < largestVectorSize; i++){
             firstVectorValues[i] -= secondVectorValues[i];
         }
 
-        dataHandler.writeCalculationObjects(this, object, '-');
+        vectorUtil.array = firstVectorValues;
 
-        this.array = firstVectorValues;
-
-        dataHandler.writeCalculationResult(this);
         return this;
     }
 
