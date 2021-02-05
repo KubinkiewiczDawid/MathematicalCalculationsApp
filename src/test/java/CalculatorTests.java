@@ -1,7 +1,6 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import Exceptions.IncorrectDataLength;
-import Exceptions.TooBigMatrixException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -88,6 +87,22 @@ public class CalculatorTests {
     }
 
     @Test
+    public void multiplyNumberWithMatrix(){
+        try {
+            MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(main, "[,1,/,1,2/,1,2]");
+            NumberUtil number = new NumberUtil(5.1);
+
+            MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(main, "[,5.1,/,5.1,10.2/,5.1,10.2]");
+
+            DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
+
+            assertEquals(number.multiply(matrix, mockedDataHandler), correctResult);
+        } catch (IllegalAccessException | InvocationTargetException | IncorrectDataLength e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void multiplyMatrixWithVector(){
         try {
             MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(main, "[,1,/,1,2/,1,2]");
@@ -98,6 +113,22 @@ public class CalculatorTests {
             DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
 
             assertEquals(matrix.multiply(vector, mockedDataHandler), correctResult);
+        } catch (IllegalAccessException | InvocationTargetException | IncorrectDataLength e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void multiplyVectorWithMatrix(){
+        try {
+            MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(main, "[,1,/,1,2/,1,2]");
+            VectorUtil vector = (VectorUtil) getVectorFromString.invoke(main, "[2.6,1,]");
+
+            VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(main, "[2.6,3,]");
+
+            DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
+
+            assertEquals(vector.multiply(matrix, mockedDataHandler), correctResult);
         } catch (IllegalAccessException | InvocationTargetException | IncorrectDataLength e) {
             e.printStackTrace();
         }
