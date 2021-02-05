@@ -31,7 +31,6 @@ public class Main {
         if(inputDataToHandle.get(0) instanceof NumberUtil ||
                 inputDataToHandle.get(0) instanceof MatrixUtil ||
                 inputDataToHandle.get(0) instanceof VectorUtil) {
-            System.out.println("doubles");
             try {
                 ((Calculable) inputDataToHandle.get(0)).makeCalculation((Calculable) inputDataToHandle.get(1));
             } catch (IncorrectDataLength e) {
@@ -142,7 +141,7 @@ public class Main {
     }
 
     private static VectorUtil isVector(String s) throws TooBigVectorExeption {
-        if(s.length() <= 2 || s.charAt(0) != '[' || s.charAt(s.length()-1) != ']') return null;
+        if(s.length() <= 3 || s.charAt(0) != '[' || s.charAt(s.length()-1) != ']') return null;
 
         for(int i = 1; i < s.length()-1; i++){
             if(s.charAt(i) != ',' && isNumeric(Character.toString(s.charAt(i))) == null && s.charAt(i) != '.'){

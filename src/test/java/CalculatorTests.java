@@ -166,4 +166,20 @@ public class CalculatorTests {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void multiplyVectorWithNumber(){
+        try {
+            VectorUtil vector = (VectorUtil) getVectorFromString.invoke(main, "[2.6,1,]");
+            NumberUtil number = new NumberUtil(5.1);
+
+            VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(main, "[13.26,5.1,]");
+
+            DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
+
+            assertEquals(vector.multiply(number, mockedDataHandler), correctResult);
+        } catch (IllegalAccessException | InvocationTargetException | IncorrectDataLength e) {
+            e.printStackTrace();
+        }
+    }
 }
