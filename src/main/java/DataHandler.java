@@ -11,6 +11,7 @@ public class DataHandler {
         this.fileName = fileName;
     }
 
+    //TODO: wrong filename when number of files > 10
     public void createFile(){
         StringBuilder fileNameBuilder = new StringBuilder();
         fileNameBuilder.append(this.fileName);
@@ -21,9 +22,9 @@ public class DataHandler {
                 fileNameBuilder.append(".1");
             }else{
                 fileNumberText = fileNumberText.replace(".", "");
-                fileNameBuilder.deleteCharAt(fileNameBuilder.indexOf(fileNumberText));
-                fileNameBuilder.deleteCharAt(fileNameBuilder.length()-1);
-                fileNameBuilder.append(".").append(Integer.parseInt(fileNumberText) + 1);
+                int indexOfNumber = fileNameBuilder.indexOf(fileNumberText);
+                fileNameBuilder.deleteCharAt(indexOfNumber);
+                fileNameBuilder.append(Integer.parseInt(fileNumberText) + 1);
             }
             this.logFile = new File(fileNameBuilder.toString());
         }
