@@ -29,29 +29,6 @@ public class MatrixUtil implements Calculable{
         return Arrays.hashCode(this.array);
     }
 
-    //TODO: fix this cases format:
-    //    [10 25 5]
-    //    [10 0 0]
-    //    [5 0 0]
-    @Override
-    public String toString() {
-        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
-        decimalFormatSymbols.setDecimalSeparator('.');
-        DecimalFormat df = new DecimalFormat("#.##", decimalFormatSymbols);
-        StringBuilder matrixString = new StringBuilder();
-        for(double[] rows: this.array){
-            matrixString.append("[");
-            for(int i = 0; i < rows.length; i++){
-                matrixString.append(df.format(rows[i]));
-                if(i != rows.length - 1) {
-                    matrixString.append(" ");
-                }
-            }
-            matrixString.append("]\n");
-        }
-        return matrixString.toString();
-    }
-
     @Override
     public void makeCalculation(Calculable object) throws IncorrectDataLength {
         if(object instanceof NumberUtil || object instanceof VectorUtil){
@@ -107,11 +84,18 @@ public class MatrixUtil implements Calculable{
     @Override
     public void multiply(Calculable object) throws IncorrectDataLength {
         if(object instanceof NumberUtil){
+            double[][] result = new double[this.array.length][this.array[0].length];
             for(int i = 0; i < this.array.length; i++){
-                for(int j = 0; j < this.array[i].length; j++){
-                    this.array[i][j] *= ((NumberUtil) object).getValue();
+                result[i] = this.array[i].clone();
+            }
+
+            for(int i = 0; i < result.length; i++){
+                for(int j = 0; j < result[i].length; j++){
+                    result[i][j] *= ((NumberUtil) object).getValue();
                 }
             }
+            Main.dataExporter.writeData(object.toString() + " * " + this.toString());
+            this.array = result;
         }else if(object instanceof VectorUtil){
             object.multiply(this);
         }else if(object instanceof MatrixUtil){
@@ -126,16 +110,20 @@ public class MatrixUtil implements Calculable{
 
             for(int row=0;row<rows;row++){
                 for(int column=0;column<columns;column++){
-                    for(int x=0;x<column;x++)
+                    for(int x=0;x<columns;x++)
                     {
                         result[row][column]+=this.array[row][x]*((MatrixUtil) object).getArray()[x][column];
                     }
                 }
             }
+
+            Main.dataExporter.writeData(object.toString() + " * " + this.toString());
+
             this.array = result;
         }
         System.out.println(object);
         System.out.println(this);
+        Main.dataExporter.writeData(" = " + this.toString() + "\n");
     }
 
     @Override
@@ -174,5 +162,31 @@ public class MatrixUtil implements Calculable{
             }
         }
         System.out.println(this);
+    }
+
+    //TODO: fix this cases format:
+    //    [10 25 5]
+    //    [10 0 0]
+    //    [5 0 0]
+    @Override
+    public String toString() {
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("#.##", decimalFormatSymbols);
+        StringBuilder matrixString = new StringBuilder();
+        for(int row = 0; row < this.array.length; row++){
+            matrixString.append("[");
+            for(int i = 0; i < this.array[row].length; i++){
+                matrixString.append(df.format(this.array[row][i]));
+                if(i != this.array[row].length - 1) {
+                    matrixString.append(" ");
+                }
+            }
+            matrixString.append("]");
+            if(row != this.array.length - 1) {
+                matrixString.append("\n");
+            }
+        }
+        return matrixString.toString();
     }
 }
