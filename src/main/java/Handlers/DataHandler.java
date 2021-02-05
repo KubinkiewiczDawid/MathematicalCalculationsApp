@@ -6,7 +6,7 @@ import java.io.*;
 
 public class DataHandler {
     private static final String FILE_NAME = "historia_obliczen.txt";
-    private final static int MAX_AMOUNT_OF_DATA = 50;
+    private final static int MAX_AMOUNT_OF_DATA = 2;
     private static File logFile;
 
     public static void createFile(){
@@ -69,9 +69,9 @@ public class DataHandler {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME));
             while (reader.readLine() != null){
-//                if(reader.readLine().equals("____________________________")){
-//                    numberOfData++;
-//                }
+                if(reader.readLine().equals("____________________________")){
+                    numberOfData++;
+                }
             }
             reader.close();
         } catch (IOException e) {

@@ -77,7 +77,7 @@ public class NumberUtil implements Calculable {
                     }
                 }
                 case 5 -> DataHandler.writeCalculation(this, object, pow((NumberUtil)object), '^');
-                case 6 -> DataHandler.writeCalculation(this, object, sqrRoot((NumberUtil)object), '/');
+                case 6 -> DataHandler.writeCalculation(this, object, sqrRoot((NumberUtil)object), '√');
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -109,8 +109,7 @@ public class NumberUtil implements Calculable {
 
     private Calculable divide(NumberUtil object)throws ArithmeticException{
         if(object.value != 0) {
-            this.value = this.value / object.value;
-            return this;
+            return new NumberUtil(this.value / object.value);
         }else{
             throw new ArithmeticException("You can't divide by 0");
         }

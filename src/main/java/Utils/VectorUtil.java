@@ -112,7 +112,7 @@ public class VectorUtil implements Calculable {
 
         vectorUtil.array = firstVectorValues;
 
-        return this;
+        return vectorUtil;
     }
 
     @Override
@@ -131,7 +131,7 @@ public class VectorUtil implements Calculable {
 
         vectorUtil.array = firstVectorValues;
 
-        return this;
+        return vectorUtil;
     }
 
     @Override

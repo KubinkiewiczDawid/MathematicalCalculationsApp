@@ -52,7 +52,7 @@ public class MatrixUtil implements Calculable {
             System.out.println("0. Leave");
 
             switch (UserInput.getUserNumericInput()){
-                case 1 -> this.multiply(object);
+                case 1 -> DataHandler.writeCalculation(this, object, this.multiply(object), '*');
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -123,7 +123,7 @@ public class MatrixUtil implements Calculable {
 
             matrixUtil.array = result;
         }
-        return this;
+        return matrixUtil;
     }
 
     @Override
@@ -143,7 +143,7 @@ public class MatrixUtil implements Calculable {
                 matrixUtil.array[row][column] += ((MatrixUtil) object).getArray()[row][column];
             }
         }
-        return this;
+        return matrixUtil;
     }
 
     @Override
@@ -163,7 +163,7 @@ public class MatrixUtil implements Calculable {
                 matrixUtil.array[row][column] -= ((MatrixUtil) object).getArray()[row][column];
             }
         }
-        return this;
+        return matrixUtil;
     }
 
     //TODO: fix this cases format:
