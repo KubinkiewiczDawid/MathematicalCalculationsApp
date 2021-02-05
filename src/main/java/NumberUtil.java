@@ -1,10 +1,15 @@
 import Exceptions.IncorrectDataLength;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 public class NumberUtil implements Calculable{
-    private final double value;
+    private double value;
+    private final DataHandler dataHandler;
 
     public NumberUtil(double value){
         this.value = value;
+        this.dataHandler = Main.dataHandler;
     }
 
     public double getValue() {
@@ -21,22 +26,34 @@ public class NumberUtil implements Calculable{
     }
 
     @Override
-    public void multiply(Calculable object) throws IncorrectDataLength {
-        if(object instanceof NumberUtil) {
-            System.out.println(this.getValue() * ((NumberUtil) object).getValue());
-        }else if(object instanceof MatrixUtil){
-            object.multiply(this);
+    public Calculable multiply(Calculable object, DataHandler dataHandler) throws IncorrectDataLength {
+        if(object instanceof MatrixUtil | object instanceof VectorUtil){
+            return object.multiply(this, dataHandler);
         }
+        return numbersMultiply((NumberUtil) object, dataHandler);
+    }
+
+    private NumberUtil numbersMultiply(NumberUtil object, DataHandler dataHandler) {
+        dataHandler.writeCalculationObjects(this, object, '*');
+        this.value *= object.getValue();
+        dataHandler.writeCalculationResult(this);
+        return this;
     }
 
     @Override
-    public void sum(Calculable object) {
-        System.out.println(this.getValue() + ((NumberUtil)object).getValue());
+    public Calculable sum(Calculable object, DataHandler dataHandler) {
+        dataHandler.writeCalculationObjects(this, object, '+');
+        this.value += ((NumberUtil) object).getValue();
+        dataHandler.writeCalculationResult(this);
+        return this;
     }
 
     @Override
-    public void subtract(Calculable object) {
-        System.out.println(this.getValue() - ((NumberUtil)object).getValue());
+    public Calculable subtract(Calculable object, DataHandler dataHandler) {
+        dataHandler.writeCalculationObjects(this, object, '-');
+        this.value -= ((NumberUtil) object).getValue();
+        dataHandler.writeCalculationResult(this);
+        return this;
     }
 
     private void handleTwoNumbersCase(Calculable object) throws IncorrectDataLength {
@@ -53,20 +70,20 @@ public class NumberUtil implements Calculable{
             System.out.println("0. Leave");
 
             switch (Main.getUserNumericInput()){
-                case 1 -> this.sum(object);
-                case 2 -> this.subtract(object);
-                case 3 -> this.multiply(object);
+                case 1 -> this.sum(object, this.dataHandler);
+                case 2 -> this.subtract(object, this.dataHandler);
+                case 3 -> this.multiply(object, this.dataHandler);
                 case 4 -> {
                     try {
-                        divide(this.value, ((NumberUtil)object).getValue());
+                        divide((NumberUtil)object, this.dataHandler);
                     }catch (ArithmeticException e){
                         System.out.print(e.getMessage());
                         System.out.println(", try again");
                         shouldContinue = true;
                     }
                 }
-                case 5 -> pow(this.value, ((NumberUtil)object).getValue());
-                case 6 -> sqrRoot(this.value, ((NumberUtil)object).getValue());
+                case 5 -> pow((NumberUtil)object, this.dataHandler);
+                case 6 -> sqrRoot(this.dataHandler);
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -86,7 +103,7 @@ public class NumberUtil implements Calculable{
             System.out.println("0. Leave");
 
             switch (Main.getUserNumericInput()){
-                case 1 -> object.multiply(this);
+                case 1 -> object.multiply(this, this.dataHandler);
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -96,32 +113,43 @@ public class NumberUtil implements Calculable{
         }while(shouldContinue);
     }
 
-    private void divide(double x, double y)throws ArithmeticException{
-        if(y != 0) {
-            System.out.println(x / y);
+    private Calculable divide(NumberUtil object, DataHandler dataHandler)throws ArithmeticException{
+        if(object.value != 0) {
+            dataHandler.writeCalculationObjects(this, object, '/');
+            this.value = this.value / object.value;
+            dataHandler.writeCalculationResult(this);
+            return this;
         }else{
             throw new ArithmeticException("You can't divide by 0");
         }
     }
 
-    private void pow(double x, double y) {
-        if(y < 0 || y > 128) {
+    private Calculable pow(NumberUtil object, DataHandler dataHandler) {
+        if(object.value < 0 || object.value > 128) {
             System.out.println("Size of exponent is not supported,");
             do {
                 System.out.println("please enter a number between 0 and 128");
-                y = Main.getUserNumericInput();
-            } while (y >= 0 && y <= 128);
+                object.value = Main.getUserNumericInput();
+            } while (object.value >= 0 && object.value <= 128);
         }
-        System.out.println(Math.pow(x, y));
+        dataHandler.writeCalculationObjects(this, object, '^');
+        this.value = Math.pow(this.value, object.value);
+        dataHandler.writeCalculationResult(this);
+        return this;
     }
 
-    private void sqrRoot(double x, double y) {
-        System.out.printf("square root of %.2f is %.2f\n", x, Math.sqrt(x));
-        System.out.printf("square root of %.2f is %.2f", y, Math.sqrt(y));
+    private Calculable sqrRoot(DataHandler dataHandler) {
+        dataHandler.writeCalculationObjects(this, new NumberUtil(2), '√');
+        this.value = Math.sqrt(this.value);
+        dataHandler.writeCalculationResult(this);
+        return this;
     }
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("#.##", decimalFormatSymbols);
+        return String.valueOf(df.format(this.value));
     }
 }

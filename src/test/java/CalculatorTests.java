@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import Exceptions.IncorrectDataLength;
 import Exceptions.TooBigMatrixException;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class CalculatorTests {
 
@@ -28,10 +29,11 @@ public class CalculatorTests {
 
             MatrixUtil correctResult = Main.getMatrixFromString("[3,6/3,6]");
 
-            //assertEquals(matrix1.multiply(matrix2), correctResult);
+            DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
+
+            assertEquals(matrix1.multiply(matrix2, mockedDataHandler), correctResult);
         } catch (TooBigMatrixException | IncorrectDataLength e) {
             e.printStackTrace();
         }
     }
-
 }

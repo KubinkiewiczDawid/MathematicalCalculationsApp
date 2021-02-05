@@ -3,13 +3,14 @@ import Exceptions.IncorrectDataLength;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
-import java.util.Locale;
 
 public class VectorUtil implements Calculable{
     private double[] array;
+    private final DataHandler dataHandler;
 
     public VectorUtil(double[] array) {
         this.array = array;
+        this.dataHandler = Main.dataHandler;
     }
 
     @Override
@@ -44,8 +45,8 @@ public class VectorUtil implements Calculable{
             System.out.println("0. Leave");
 
             switch (Main.getUserNumericInput()){
-                case 1 -> this.sum(object);
-                case 2 -> this.subtract(object);
+                case 1 -> this.sum(object, this.dataHandler);
+                case 2 -> this.subtract(object, this.dataHandler);
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -65,7 +66,7 @@ public class VectorUtil implements Calculable{
             System.out.println("0. Leave");
 
             switch (Main.getUserNumericInput()){
-                case 1 -> this.multiply(object);
+                case 1 -> this.multiply(object, this.dataHandler);
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -76,7 +77,8 @@ public class VectorUtil implements Calculable{
     }
 
     @Override
-    public void multiply(Calculable object) throws IncorrectDataLength {
+    public Calculable multiply(Calculable object, DataHandler dataHandler) throws IncorrectDataLength {
+        dataHandler.writeCalculationObjects(this, object, '*');
         if(object instanceof NumberUtil){
             for(int i = 0; i < this.array.length; i++){
                 this.array[i] *= ((NumberUtil) object).getValue();
@@ -101,14 +103,15 @@ public class VectorUtil implements Calculable{
             }
             this.array = result;
         }
-        System.out.println(this);
+        dataHandler.writeCalculationResult(this);
+        return this;
     }
 
     @Override
-    public void sum(Calculable object) {
+    public Calculable sum(Calculable object, DataHandler dataHandler) {
         int largestVectorSize = this.array.length > ((VectorUtil)object).array.length? this.array.length : ((VectorUtil)object).array.length;
         double[] firstVectorValues = new double[largestVectorSize];
-        int[] secondVectorValues = new int[largestVectorSize];
+        double[] secondVectorValues = new double[largestVectorSize];
 
         System.arraycopy(this.array, 0, firstVectorValues, 0, this.array.length);
         System.arraycopy(((VectorUtil)object).array, 0, secondVectorValues, 0, ((VectorUtil)object).array.length);
@@ -117,17 +120,19 @@ public class VectorUtil implements Calculable{
             firstVectorValues[i] += secondVectorValues[i];
         }
 
+        dataHandler.writeCalculationObjects(this, object, '+');
+
         this.array = firstVectorValues;
 
-        System.out.print("Vectors summary equals ");
-        System.out.println(this);
+        dataHandler.writeCalculationResult(this);
+        return this;
     }
 
     @Override
-    public void subtract(Calculable object) {
-        int largestVectorSize = this.array.length > ((VectorUtil)object).array.length? this.array.length : ((VectorUtil)object).array.length;
+    public Calculable subtract(Calculable object, DataHandler dataHandler) {
+        int largestVectorSize = Math.max(this.array.length, ((VectorUtil) object).array.length);
         double[] firstVectorValues = new double[largestVectorSize];
-        int[] secondVectorValues = new int[largestVectorSize];
+        double[] secondVectorValues = new double[largestVectorSize];
 
         System.arraycopy(this.array, 0, firstVectorValues, 0, this.array.length);
         System.arraycopy(((VectorUtil)object).array, 0, secondVectorValues, 0, ((VectorUtil)object).array.length);
@@ -136,10 +141,12 @@ public class VectorUtil implements Calculable{
             firstVectorValues[i] -= secondVectorValues[i];
         }
 
+        dataHandler.writeCalculationObjects(this, object, '-');
+
         this.array = firstVectorValues;
 
-        System.out.print("Vectors subtraction equals ");
-        System.out.println(this);
+        dataHandler.writeCalculationResult(this);
+        return this;
     }
 
     @Override

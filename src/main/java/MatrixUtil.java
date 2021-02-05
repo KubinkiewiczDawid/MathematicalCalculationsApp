@@ -6,9 +6,11 @@ import java.util.Arrays;
 
 public class MatrixUtil implements Calculable{
     private double[][] array;
+    private final DataHandler dataHandler;
 
     public MatrixUtil(double[][] array) {
         this.array = array;
+        this.dataHandler = Main.dataHandler;
     }
 
     public double[][] getArray() {
@@ -48,7 +50,7 @@ public class MatrixUtil implements Calculable{
             System.out.println("0. Leave");
 
             switch (Main.getUserNumericInput()){
-                case 1 -> this.multiply(object);
+                case 1 -> this.multiply(object, this.dataHandler);
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -69,9 +71,9 @@ public class MatrixUtil implements Calculable{
             System.out.println("0. Leave");
 
             switch (Main.getUserNumericInput()){
-                case 1 -> this.sum(object);
-                case 2 -> this.subtract(object);
-                case 3 -> this.multiply(object);
+                case 1 -> this.sum(object, this.dataHandler);
+                case 2 -> this.subtract(object, this.dataHandler);
+                case 3 -> this.multiply(object, this.dataHandler);
                 case 0 -> shouldContinue = false;
                 default -> {
                     System.out.println("Invalid option, try again");
@@ -82,7 +84,7 @@ public class MatrixUtil implements Calculable{
     }
 
     @Override
-    public void multiply(Calculable object) throws IncorrectDataLength {
+    public Calculable multiply(Calculable object, DataHandler dataHandler) throws IncorrectDataLength {
         if(object instanceof NumberUtil){
             double[][] result = new double[this.array.length][this.array[0].length];
             for(int i = 0; i < this.array.length; i++){
@@ -94,10 +96,10 @@ public class MatrixUtil implements Calculable{
                     result[i][j] *= ((NumberUtil) object).getValue();
                 }
             }
-            Main.dataExporter.writeData(object.toString() + " * " + this.toString());
+            dataHandler.writeCalculationObjects(this, object, '*');
             this.array = result;
         }else if(object instanceof VectorUtil){
-            object.multiply(this);
+            object.multiply(this, dataHandler);
         }else if(object instanceof MatrixUtil){
             int rows = ((MatrixUtil) object).getArray().length;
             int columns = ((MatrixUtil) object).getArray()[0].length;
@@ -116,18 +118,16 @@ public class MatrixUtil implements Calculable{
                     }
                 }
             }
-
-            Main.dataExporter.writeData(object.toString() + " * " + this.toString());
+            dataHandler.writeCalculationObjects(this, object, '*');
 
             this.array = result;
         }
-        System.out.println(object);
-        System.out.println(this);
-        Main.dataExporter.writeData(" = " + this.toString() + "\n");
+        dataHandler.writeCalculationResult(this);
+        return this;
     }
 
     @Override
-    public void sum(Calculable object) throws IncorrectDataLength {
+    public Calculable sum(Calculable object, DataHandler dataHandler) throws IncorrectDataLength {
         int thisColumns = this.array.length;
         int thisValues = this.array[0].length;
         int objectColumns = ((MatrixUtil) object).getArray().length;
@@ -137,16 +137,19 @@ public class MatrixUtil implements Calculable{
             throw new IncorrectDataLength("Matrix must be the same size");
         }
 
+        dataHandler.writeCalculationObjects(this, object, '+');
+
         for (int row = 0; row < thisColumns; row++) {
             for (int column = 0; column < thisValues; column++) {
                 this.array[row][column] += ((MatrixUtil) object).getArray()[row][column];
             }
         }
-        System.out.println(this);
+        dataHandler.writeCalculationResult(this);
+        return this;
     }
 
     @Override
-    public void subtract(Calculable object) throws IncorrectDataLength {
+    public Calculable subtract(Calculable object, DataHandler dataHandler) throws IncorrectDataLength {
         int thisRows = this.array.length;
         int thisColumns = this.array[0].length;
         int objectRows = ((MatrixUtil) object).getArray().length;
@@ -156,12 +159,15 @@ public class MatrixUtil implements Calculable{
             throw new IncorrectDataLength("Matrix must be the same size");
         }
 
+        dataHandler.writeCalculationObjects(this, object, '+');
+
         for (int row = 0; row < thisRows; row++) {
             for (int column = 0; column < thisColumns; column++) {
                 this.array[row][column] -= ((MatrixUtil) object).getArray()[row][column];
             }
         }
-        System.out.println(this);
+        dataHandler.writeCalculationResult(this);
+        return this;
     }
 
     //TODO: fix this cases format:

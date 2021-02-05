@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
-    static DataExporter dataExporter = new DataExporter("historia_obliczen.txt");
+    static DataHandler dataHandler = new DataHandler("historia_obliczen.txt");
     public static void main(String[] args) {
-        dataExporter.createFile();
+        dataHandler.createFile();
         while(true) {
             List<Object> inputDataToHandle = null;
             System.out.println("Write two input data separated with space:");

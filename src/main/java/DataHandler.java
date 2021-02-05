@@ -3,11 +3,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class DataExporter {
+public class DataHandler {
     private String fileName;
     private File logFile;
 
-    public DataExporter(String fileName) {
+    public DataHandler(String fileName) {
         this.fileName = fileName;
     }
 
@@ -41,5 +41,15 @@ public class DataExporter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void writeCalculationObjects(Calculable calculable, Calculable calculable2, char operation){
+        String s = calculable.toString() + "\n" + operation + "\n" + calculable2.toString();
+        System.out.print(s);
+        writeData(s);
+    }
+    public void writeCalculationResult(Calculable calculable){
+        String s = "\n=\n" + calculable.toString() + "\n" + "=============================" + "\n";
+        System.out.print(s);
+        writeData(s);
     }
 }
