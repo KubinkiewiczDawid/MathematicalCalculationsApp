@@ -111,7 +111,7 @@ public class Main {
         return getMatrixFromString(data);
     }
 
-    public static MatrixUtil getMatrixFromString(String s) throws TooBigMatrixException {
+    private static MatrixUtil getMatrixFromString(String s) throws TooBigMatrixException {
         s = removeSquareBrackets(s);
         String[] rows = s.split("/", -1);
         if(rows.length > 4){
@@ -143,7 +143,7 @@ public class Main {
                 if(columns[j].equals("")){
                     matrixData[i][j] = 0;
                 }else{
-                    matrixData[i][j] = Integer.parseInt(columns[j]);
+                    matrixData[i][j] = Double.parseDouble(columns[j]);
                 }
             }
         }
