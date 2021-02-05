@@ -119,4 +119,9 @@ public class NumberUtil implements Calculable{
         System.out.printf("square root of %.2f is %.2f\n", x, Math.sqrt(x));
         System.out.printf("square root of %.2f is %.2f", y, Math.sqrt(y));
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
 }

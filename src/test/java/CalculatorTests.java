@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import Exceptions.IncorrectDataLength;
 import Exceptions.TooBigMatrixException;
 import org.junit.jupiter.api.Test;
 
@@ -16,10 +17,21 @@ public class CalculatorTests {
             e.printStackTrace();
         }
 
-        System.out.println(matrixUtil);
-        System.out.println(matrixUtilFromString);
-
         assertEquals(matrixUtil, matrixUtilFromString);
+    }
+
+    @Test
+    public void multiplyMatrices(){
+        try {
+            MatrixUtil matrix1 = Main.getMatrixFromString("[1,2/1,1]");
+            MatrixUtil matrix2 = Main.getMatrixFromString("[1,2/1,1]");
+
+            MatrixUtil correctResult = Main.getMatrixFromString("[3,6/3,6]");
+
+            //assertEquals(matrix1.multiply(matrix2), correctResult);
+        } catch (TooBigMatrixException | IncorrectDataLength e) {
+            e.printStackTrace();
+        }
     }
 
 }
