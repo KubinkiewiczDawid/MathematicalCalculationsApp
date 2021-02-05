@@ -5,12 +5,13 @@ import Utils.Calculable;
 import java.io.*;
 
 public class DataHandler {
+    private static final String FILE_PATH = "C:\\"; //TODO: make changable by user
     private static final String FILE_NAME = "historia_obliczen.txt";
     private final static int MAX_AMOUNT_OF_DATA = 50;
     private static File logFile;
 
     public static void createFile(){
-        logFile = new File(FILE_NAME);
+        logFile = new File(FILE_PATH, FILE_NAME);
         try {
             if(!logFile.exists()){
                 logFile.createNewFile();
@@ -22,7 +23,7 @@ public class DataHandler {
 
     private static void createCopyFile(){
         StringBuilder fileNameBuilder = new StringBuilder();
-        File newLogFile = new File(FILE_NAME + ".1");
+        File newLogFile = new File(FILE_PATH, FILE_NAME + ".1");
         fileNameBuilder.append(newLogFile.getName());
         if (newLogFile.exists()) {
             while(newLogFile.exists()){
@@ -68,7 +69,7 @@ public class DataHandler {
     private static int getAmountOfDataWritten(){
         int numberOfData = 0;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME));
+            BufferedReader reader = new BufferedReader(new FileReader(logFile));
             while (reader.readLine() != null){
                 if(reader.readLine().equals("____________________________")){
                     numberOfData++;
