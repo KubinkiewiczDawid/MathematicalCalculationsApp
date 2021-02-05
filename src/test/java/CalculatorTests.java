@@ -1,6 +1,10 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import Exceptions.IncorrectDataLength;
+import Handlers.DataHandler;
+import Utils.MatrixUtil;
+import Utils.NumberUtil;
+import Utils.VectorUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -9,18 +13,18 @@ import java.lang.reflect.Method;
 
 public class CalculatorTests {
 
-    Object main;
+    Object calculator;
     Method getMatrixFromString;
     Method getVectorFromString;
     Method getNumberFromString;
     {
         try {
-            main = Main.class.newInstance();
-            getMatrixFromString = main.getClass().getDeclaredMethod("getMatrixFromString", String.class);
+            calculator = Calculator.class.newInstance();
+            getMatrixFromString = calculator.getClass().getDeclaredMethod("getMatrixFromString", String.class);
             getMatrixFromString.setAccessible(true);
-            getVectorFromString = main.getClass().getDeclaredMethod("getVectorFromString", String.class);
+            getVectorFromString = calculator.getClass().getDeclaredMethod("getVectorFromString", String.class);
             getVectorFromString.setAccessible(true);
-            getNumberFromString = main.getClass().getDeclaredMethod("isNumeric", String.class);
+            getNumberFromString = calculator.getClass().getDeclaredMethod("isNumeric", String.class);
             getNumberFromString.setAccessible(true);
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             e.printStackTrace();
@@ -30,10 +34,10 @@ public class CalculatorTests {
     @Test
     public void matrixFromStringTest(){
         double[][] matrixData = {{1,2}, {1,1}};
-        MatrixUtil matrixUtil = new MatrixUtil(matrixData);
+        MatrixUtil matrixUtil = new MatrixUtil(matrixData,null);
         MatrixUtil matrixUtilFromString = null;
         try {
-            matrixUtilFromString = (MatrixUtil) getMatrixFromString.invoke(main, "[1,2/1,1]");//getMatrixFromString();
+            matrixUtilFromString = (MatrixUtil) getMatrixFromString.invoke(calculator, "[1,2/1,1]");//getMatrixFromString();
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -44,10 +48,10 @@ public class CalculatorTests {
     @Test
     public void vectorFromStringTest(){
         double[] vectorData = {1,2.1,0,5.1};
-        VectorUtil vectorUtil = new VectorUtil(vectorData);
+        VectorUtil vectorUtil = new VectorUtil(vectorData, null);
         VectorUtil vectorUtilFromString = null;
         try {
-            vectorUtilFromString = (VectorUtil) getVectorFromString.invoke(main, "[1,2.1,,5.1]");//getMatrixFromString();
+            vectorUtilFromString = (VectorUtil) getVectorFromString.invoke(calculator, "[1,2.1,,5.1]");//getMatrixFromString();
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -62,7 +66,7 @@ public class CalculatorTests {
         NumberUtil numberUtil = new NumberUtil(numberData);
         NumberUtil numberUtilFromString = null;
         try {
-            stringValue = (double) getNumberFromString.invoke(main, "5.210");//getMatrixFromString();
+            stringValue = (double) getNumberFromString.invoke(calculator, "5.210");//getMatrixFromString();
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -74,10 +78,10 @@ public class CalculatorTests {
     @Test
     public void multiplyMatrices(){
         try {
-            MatrixUtil matrix1 = (MatrixUtil) getMatrixFromString.invoke(main, "[1,2/1,2]");
-            MatrixUtil matrix2 = (MatrixUtil) getMatrixFromString.invoke(main, "[1,2/1,2]");
+            MatrixUtil matrix1 = (MatrixUtil) getMatrixFromString.invoke(calculator, "[1,2/1,2]");
+            MatrixUtil matrix2 = (MatrixUtil) getMatrixFromString.invoke(calculator, "[1,2/1,2]");
 
-            MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(main, "[3,6/3,6]");
+            MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(calculator, "[3,6/3,6]");
 
             DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
 
@@ -90,10 +94,10 @@ public class CalculatorTests {
     @Test
     public void addMatrices(){
         try {
-            MatrixUtil matrix1 = (MatrixUtil) getMatrixFromString.invoke(main, "[,1,/,1,2/,1,2]");
-            MatrixUtil matrix2 = (MatrixUtil) getMatrixFromString.invoke(main, "[,,/6,1,1/,9,2]");
+            MatrixUtil matrix1 = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,1,/,1,2/,1,2]");
+            MatrixUtil matrix2 = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,,/6,1,1/,9,2]");
 
-            MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(main, "[,1,/6,2,3/,10,4]");
+            MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,1,/6,2,3/,10,4]");
 
             DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
 
@@ -106,10 +110,10 @@ public class CalculatorTests {
     @Test
     public void multiplyMatrixWithNumber(){
         try {
-            MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(main, "[,1,/,1,2/,1,2]");
+            MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,1,/,1,2/,1,2]");
             NumberUtil number = new NumberUtil(5.1);
 
-            MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(main, "[,5.1,/,5.1,10.2/,5.1,10.2]");
+            MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,5.1,/,5.1,10.2/,5.1,10.2]");
 
             DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
 
@@ -122,10 +126,10 @@ public class CalculatorTests {
     @Test
     public void multiplyNumberWithMatrix(){
         try {
-            MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(main, "[,1,/,1,2/,1,2]");
+            MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,1,/,1,2/,1,2]");
             NumberUtil number = new NumberUtil(5.1);
 
-            MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(main, "[,5.1,/,5.1,10.2/,5.1,10.2]");
+            MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,5.1,/,5.1,10.2/,5.1,10.2]");
 
             DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
 
@@ -138,10 +142,10 @@ public class CalculatorTests {
     @Test
     public void multiplyMatrixWithVector(){
         try {
-            MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(main, "[,1,/,1,2/,1,2]");
-            VectorUtil vector = (VectorUtil) getVectorFromString.invoke(main, "[2.6,1,]");
+            MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,1,/,1,2/,1,2]");
+            VectorUtil vector = (VectorUtil) getVectorFromString.invoke(calculator, "[2.6,1,]");
 
-            VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(main, "[2.6,3,]");
+            VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(calculator, "[2.6,3,]");
 
             DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
 
@@ -154,10 +158,10 @@ public class CalculatorTests {
     @Test
     public void multiplyVectorWithMatrix(){
         try {
-            MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(main, "[,1,/,1,2/,1,2]");
-            VectorUtil vector = (VectorUtil) getVectorFromString.invoke(main, "[2.6,1,]");
+            MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(calculator, "[,1,/,1,2/,1,2]");
+            VectorUtil vector = (VectorUtil) getVectorFromString.invoke(calculator, "[2.6,1,]");
 
-            VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(main, "[2.6,3,]");
+            VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(calculator, "[2.6,3,]");
 
             DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
 
@@ -170,10 +174,10 @@ public class CalculatorTests {
     @Test
     public void multiplyVectorWithNumber(){
         try {
-            VectorUtil vector = (VectorUtil) getVectorFromString.invoke(main, "[2.6,1,]");
+            VectorUtil vector = (VectorUtil) getVectorFromString.invoke(calculator, "[2.6,1,]");
             NumberUtil number = new NumberUtil(5.1);
 
-            VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(main, "[13.26,5.1,]");
+            VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(calculator, "[13.26,5.1,]");
 
             DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
 

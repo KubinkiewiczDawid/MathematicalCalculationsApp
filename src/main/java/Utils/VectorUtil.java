@@ -1,16 +1,22 @@
+package Utils;
+
 import Exceptions.IncorrectDataLength;
+import Handlers.DataHandler;
+import UserCommunication.UserInput;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 
-public class VectorUtil implements Calculable{
+public class VectorUtil implements Calculable {
     private double[] array;
     private final DataHandler dataHandler;
+    private UserInput userInput;
 
-    public VectorUtil(double[] array) {
+    public VectorUtil(double[] array, DataHandler dataHandler) {
         this.array = array;
-        this.dataHandler = Main.dataHandler;
+        this.dataHandler = dataHandler;
+        this.userInput = new UserInput();
     }
 
     @Override
@@ -31,7 +37,7 @@ public class VectorUtil implements Calculable{
             System.out.println();
             System.out.println("0. Leave");
 
-            switch (Main.getUserNumericInput()){
+            switch (userInput.getUserNumericInput()){
                 case 1 -> this.sum(object, this.dataHandler);
                 case 2 -> this.subtract(object, this.dataHandler);
                 case 0 -> shouldContinue = false;
@@ -52,7 +58,7 @@ public class VectorUtil implements Calculable{
             System.out.println();
             System.out.println("0. Leave");
 
-            switch (Main.getUserNumericInput()){
+            switch (userInput.getUserNumericInput()){
                 case 1 -> this.multiply(object, this.dataHandler);
                 case 0 -> shouldContinue = false;
                 default -> {

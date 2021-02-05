@@ -1,16 +1,22 @@
+package Utils;
+
 import Exceptions.IncorrectDataLength;
+import Handlers.DataHandler;
+import UserCommunication.UserInput;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 
-public class MatrixUtil implements Calculable{
+public class MatrixUtil implements Calculable {
     private double[][] array;
     private final DataHandler dataHandler;
+    private UserInput userInput;
 
-    public MatrixUtil(double[][] array) {
+    public MatrixUtil(double[][] array, DataHandler dataHandler) {
         this.array = array;
-        this.dataHandler = Main.dataHandler;
+        this.dataHandler = dataHandler;
+        userInput = new UserInput();
     }
 
     public double[][] getArray() {
@@ -49,7 +55,7 @@ public class MatrixUtil implements Calculable{
             System.out.println();
             System.out.println("0. Leave");
 
-            switch (Main.getUserNumericInput()){
+            switch (userInput.getUserNumericInput()){
                 case 1 -> this.multiply(object, this.dataHandler);
                 case 0 -> shouldContinue = false;
                 default -> {
@@ -70,7 +76,7 @@ public class MatrixUtil implements Calculable{
             System.out.println();
             System.out.println("0. Leave");
 
-            switch (Main.getUserNumericInput()){
+            switch (userInput.getUserNumericInput()){
                 case 1 -> this.sum(object, this.dataHandler);
                 case 2 -> this.subtract(object, this.dataHandler);
                 case 3 -> this.multiply(object, this.dataHandler);

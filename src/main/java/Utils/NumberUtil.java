@@ -1,16 +1,27 @@
+package Utils;
+
 import Exceptions.IncorrectDataLength;
+import Handlers.DataHandler;
+import UserCommunication.UserInput;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Objects;
 
-public class NumberUtil implements Calculable{
+public class NumberUtil implements Calculable {
     private double value;
     private final DataHandler dataHandler;
+    private UserInput userInput;
 
     public NumberUtil(double value){
         this.value = value;
-        this.dataHandler = Main.dataHandler;
+        this.dataHandler = null;
+    }
+
+    public NumberUtil(double value, DataHandler dataHandler){
+        this.value = value;
+        this.dataHandler = dataHandler;
+        this.userInput = new UserInput();
     }
 
     public double getValue() {
@@ -70,7 +81,7 @@ public class NumberUtil implements Calculable{
             System.out.println();
             System.out.println("0. Leave");
 
-            switch (Main.getUserNumericInput()){
+            switch (userInput.getUserNumericInput()){
                 case 1 -> this.sum(object, this.dataHandler);
                 case 2 -> this.subtract(object, this.dataHandler);
                 case 3 -> this.multiply(object, this.dataHandler);
@@ -103,7 +114,7 @@ public class NumberUtil implements Calculable{
             System.out.println();
             System.out.println("0. Leave");
 
-            switch (Main.getUserNumericInput()){
+            switch (userInput.getUserNumericInput()){
                 case 1 -> object.multiply(this, this.dataHandler);
                 case 0 -> shouldContinue = false;
                 default -> {
@@ -130,7 +141,7 @@ public class NumberUtil implements Calculable{
             System.out.println("Size of exponent is not supported,");
             do {
                 System.out.println("please enter a number between 0 and 128");
-                object.value = Main.getUserNumericInput();
+                object.value = userInput.getUserNumericInput();
             } while (object.value >= 0 && object.value <= 128);
         }
         dataHandler.writeCalculationObjects(this, object, '^');
