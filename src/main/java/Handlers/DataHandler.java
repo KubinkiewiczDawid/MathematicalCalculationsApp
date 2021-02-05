@@ -6,7 +6,7 @@ import java.io.*;
 
 public class DataHandler {
     private static final String FILE_NAME = "historia_obliczen.txt";
-    private final static int MAX_AMOUNT_OF_DATA = 2;
+    private final static int MAX_AMOUNT_OF_DATA = 50;
     private static File logFile;
 
     public static void createFile(){
@@ -58,10 +58,19 @@ public class DataHandler {
         if(getAmountOfDataWritten() >= MAX_AMOUNT_OF_DATA){
             createCopyFile();
         }
+        System.out.println("Operation:");
         String s = value1.toString() + "\n" + operation + "\n" + value2.toString() + "\n=\n" + result.toString() + "\n" + "____________________________" + "\n";
 
         System.out.print(s);
         writeData(s);
+    }
+
+    private static void clearScreen() {
+
+        System.out.print("\033[H\033[2J");
+
+        System.out.flush();
+
     }
 
     private static int getAmountOfDataWritten(){
