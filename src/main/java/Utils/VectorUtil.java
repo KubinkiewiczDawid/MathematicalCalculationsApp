@@ -99,7 +99,7 @@ public class VectorUtil implements Calculable {
     @Override
     public Calculable sum(Calculable object) {
         VectorUtil vectorUtil = new VectorUtil(this.array);
-        int largestVectorSize = vectorUtil.array.length > ((VectorUtil)object).array.length? vectorUtil.array.length : ((VectorUtil)object).array.length;
+        int largestVectorSize = Math.max(vectorUtil.array.length, ((VectorUtil) object).array.length);
         double[] firstVectorValues = new double[largestVectorSize];
         double[] secondVectorValues = new double[largestVectorSize];
 

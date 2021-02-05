@@ -1,12 +1,10 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import Exceptions.IncorrectDataLength;
-import Handlers.DataHandler;
 import Utils.MatrixUtil;
 import Utils.NumberUtil;
 import Utils.VectorUtil;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class Calculator {
-    UserInput userInput = new UserInput();
 
     public void startCalculator(){
         DataHandler.createFile();
@@ -51,7 +50,7 @@ public class Calculator {
     }
 
     private List<Object> getInputData() throws InsufficientAmountOfDataException, IncorrectInputDataException, TooBigMatrixException, TooBigVectorExeption {
-        String inputData = userInput.getUserDataInput();
+        String inputData = UserInput.getUserDataInput();
 
         return validateInputData(inputData);
     }
