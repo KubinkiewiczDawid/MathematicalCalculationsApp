@@ -114,7 +114,27 @@ public class MatrixUtil implements Calculable{
             }
         }else if(object instanceof VectorUtil){
             object.multiply(this);
+        }else if(object instanceof MatrixUtil){
+            int rows = ((MatrixUtil) object).getArray().length;
+            int columns = ((MatrixUtil) object).getArray()[0].length;
+
+            if(this.array.length != columns){
+                throw new IncorrectDataLength("First matrices row must have same length as second matrices columns");
+            }
+
+            double[][] result = new double[rows][columns];
+
+            for(int row=0;row<rows;row++){
+                for(int column=0;column<columns;column++){
+                    for(int x=0;x<column;x++)
+                    {
+                        result[row][column]+=this.array[row][x]*((MatrixUtil) object).getArray()[x][column];
+                    }
+                }
+            }
+            this.array = result;
         }
+        System.out.println(object);
         System.out.println(this);
     }
 

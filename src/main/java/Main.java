@@ -9,19 +9,21 @@ import java.util.regex.Pattern;
 public class Main {
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-        List<Object> inputDataToHandle = null;
+        while(true) {
+            List<Object> inputDataToHandle = null;
 
-        System.out.println("Write two input data separated with space:");
-        do {
-            try {
-                inputDataToHandle = getInputData();
-            } catch (InsufficientAmountOfDataException | IncorrectInputDataException | TooBigMatrixException | TooBigVectorExeption e) {
-                System.out.println(e.getMessage());
-                System.out.println("Try again");
-            }
-        }while(inputDataToHandle==null);
+            System.out.println("Write two input data separated with space:");
+            do {
+                try {
+                    inputDataToHandle = getInputData();
+                } catch (InsufficientAmountOfDataException | IncorrectInputDataException | TooBigMatrixException | TooBigVectorExeption e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Try again");
+                }
+            } while (inputDataToHandle == null);
 
-        handleData(inputDataToHandle);
+            handleData(inputDataToHandle);
+        }
     }
 
     private static void handleData(List<Object> inputDataToHandle) {

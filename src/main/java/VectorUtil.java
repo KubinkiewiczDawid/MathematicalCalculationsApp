@@ -75,7 +75,6 @@ public class VectorUtil implements Calculable{
         }while(shouldContinue);
     }
 
-    //TODO incorrect reading of matrix size columns/rows?
     @Override
     public void multiply(Calculable object) throws IncorrectDataLength {
         if(object instanceof NumberUtil){
@@ -86,7 +85,7 @@ public class VectorUtil implements Calculable{
             int rows = ((MatrixUtil) object).getArray().length;
             int columns = ((MatrixUtil) object).getArray()[0].length;
 
-            if(this.array.length != columns){
+            if(this.array.length != rows){
                 throw new IncorrectDataLength("Vector must have same length as matrix columns");
             }
 
