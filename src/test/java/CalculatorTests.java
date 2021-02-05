@@ -12,6 +12,7 @@ public class CalculatorTests {
     Object main;
     Method getMatrixFromString;
     Method getVectorFromString;
+    Method getNumberFromString;
     {
         try {
             main = Main.class.newInstance();
@@ -19,13 +20,15 @@ public class CalculatorTests {
             getMatrixFromString.setAccessible(true);
             getVectorFromString = main.getClass().getDeclaredMethod("getVectorFromString", String.class);
             getVectorFromString.setAccessible(true);
+            getNumberFromString = main.getClass().getDeclaredMethod("isNumeric", String.class);
+            getNumberFromString.setAccessible(true);
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void matrixToStringTest(){
+    public void matrixFromStringTest(){
         double[][] matrixData = {{1,2}, {1,1}};
         MatrixUtil matrixUtil = new MatrixUtil(matrixData);
         MatrixUtil matrixUtilFromString = null;
@@ -36,6 +39,36 @@ public class CalculatorTests {
         }
 
         assertEquals(matrixUtil, matrixUtilFromString);
+    }
+
+    @Test
+    public void vectorFromStringTest(){
+        double[] vectorData = {1,2.1,0,5.1};
+        VectorUtil vectorUtil = new VectorUtil(vectorData);
+        VectorUtil vectorUtilFromString = null;
+        try {
+            vectorUtilFromString = (VectorUtil) getVectorFromString.invoke(main, "[1,2.1,,5.1]");//getMatrixFromString();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(vectorUtil, vectorUtilFromString);
+    }
+
+    @Test
+    public void numberFromStringTest(){
+        double numberData = 5.21;
+        double stringValue = 0;
+        NumberUtil numberUtil = new NumberUtil(numberData);
+        NumberUtil numberUtilFromString = null;
+        try {
+            stringValue = (double) getNumberFromString.invoke(main, "5.210");//getMatrixFromString();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        numberUtilFromString = new NumberUtil(stringValue);
+
+        assertEquals(numberUtil, numberUtilFromString);
     }
 
     @Test

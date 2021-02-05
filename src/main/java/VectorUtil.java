@@ -14,19 +14,6 @@ public class VectorUtil implements Calculable{
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        VectorUtil vectorUtil = (VectorUtil) o;
-        return Arrays.equals(this.array, vectorUtil.array);
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(array);
-    }
-
-    @Override
     public void makeCalculation(Calculable object) throws IncorrectDataLength {
         if(object instanceof VectorUtil){
             handleTwoVectorsCase(object);
@@ -165,5 +152,18 @@ public class VectorUtil implements Calculable{
         }
         vectorString.append("]");
         return vectorString.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VectorUtil vectorUtil = (VectorUtil) o;
+        return Arrays.equals(this.array, vectorUtil.array);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(array);
     }
 }

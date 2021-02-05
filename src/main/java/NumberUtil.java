@@ -2,6 +2,7 @@ import Exceptions.IncorrectDataLength;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Objects;
 
 public class NumberUtil implements Calculable{
     private double value;
@@ -151,5 +152,18 @@ public class NumberUtil implements Calculable{
         decimalFormatSymbols.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("#.##", decimalFormatSymbols);
         return String.valueOf(df.format(this.value));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NumberUtil that = (NumberUtil) o;
+        return Double.compare(that.value, value) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }
