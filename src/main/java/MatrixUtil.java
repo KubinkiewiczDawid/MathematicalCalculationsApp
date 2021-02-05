@@ -99,7 +99,7 @@ public class MatrixUtil implements Calculable{
             dataHandler.writeCalculationObjects(this, object, '*');
             this.array = result;
         }else if(object instanceof VectorUtil){
-            object.multiply(this, dataHandler);
+            return object.multiply(this, dataHandler);
         }else if(object instanceof MatrixUtil){
             int rows = ((MatrixUtil) object).getArray().length;
             int columns = ((MatrixUtil) object).getArray()[0].length;

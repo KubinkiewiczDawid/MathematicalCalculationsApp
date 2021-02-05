@@ -95,9 +95,10 @@ public class VectorUtil implements Calculable{
 
             for (int row = 0; row < ((MatrixUtil) object).getArray().length; row++) {
                 double sum = 0;
-                for (int column = 0; column < columns; column++) {
-                    sum += ((MatrixUtil) object).getArray()[row][column]
-                            * this.array[column];
+                for(int column = 0; column < columns; column++){
+                    double value = ((MatrixUtil) object).getArray()[row][column];
+                    sum += value
+                            * this.array[row];
                 }
                 result[row] = sum;
             }

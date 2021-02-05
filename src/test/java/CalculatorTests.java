@@ -91,9 +91,9 @@ public class CalculatorTests {
     public void multiplyMatrixWithVector(){
         try {
             MatrixUtil matrix = (MatrixUtil) getMatrixFromString.invoke(main, "[,1,/,1,2/,1,2]");
-            VectorUtil vector = (VectorUtil) getVectorFromString.invoke(main, "[2.1,1,]");
+            VectorUtil vector = (VectorUtil) getVectorFromString.invoke(main, "[2.6,1,]");
 
-            MatrixUtil correctResult = (MatrixUtil) getMatrixFromString.invoke(main, "[,5.1,/,5.1,10.2/,5.1,10.2]");
+            VectorUtil correctResult = (VectorUtil) getVectorFromString.invoke(main, "[2.6,3,]");
 
             DataHandler mockedDataHandler = Mockito.mock(DataHandler.class);
 
