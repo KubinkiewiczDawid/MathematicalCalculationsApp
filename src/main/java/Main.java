@@ -46,15 +46,6 @@ public class Main {
         return s;
     }
 
-    public static void print2dArray(int[][] arrays){
-        for(int[] array: arrays){
-            for(int x : array){
-                System.out.print(x + " ");
-            }
-            System.out.println();
-        }
-    }
-
     private static List<Object> getInputData() throws InsufficientAmountOfDataException, IncorrectInputDataException, TooBigMatrixException, TooBigVectorExeption {
         String inputData = scanner.nextLine();
 
