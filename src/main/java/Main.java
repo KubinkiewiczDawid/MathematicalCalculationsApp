@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
-    static DataHandler dataHandler = new DataHandler("historia_obliczen.txt");
+    static DataHandler dataHandler = new DataHandler();
     public static void main(String[] args) {
         dataHandler.createFile();
         while(true) {
