@@ -1,5 +1,7 @@
 # MathematicalCalculationsApp
 
+Minimalna wersja JDK - 14
+
 Program wykonujący operacje matematyczne w zależności od podanych danych wejściowych.
 
 W pierwszej kolejności należy podać dane wejściowe oddzielając je od siebie spacją.
