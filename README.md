@@ -1,8 +1,12 @@
 # MathematicalCalculationsApp
 
+Program wykonujący operacje matematyczne w zależności od podanych danych wejściowych.
+
 Minimalna wersja JDK - 14
 
-Program wykonujący operacje matematyczne w zależności od podanych danych wejściowych.
+Aby uruchomić aplikację należy otworzyć konsole i wpisać następującą komende:
+
+    java -jar sciezkaPliku\MathematicalCalculationsApp.jar
 
 W pierwszej kolejności należy podać dane wejściowe oddzielając je od siebie spacją.
 Dana wejściowa może być: liczba rzeczywista, wektor lub macierz.
