@@ -1,7 +1,6 @@
 package Utils;
 
 import Exceptions.IncorrectDataLength;
-import Handlers.DataHandler;
 
 public interface Calculable {
     void makeCalculation(Calculable object) throws IncorrectDataLength;
