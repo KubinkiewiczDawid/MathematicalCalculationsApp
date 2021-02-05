@@ -92,23 +92,23 @@ public class Main {
         inputDataToHandle.add(object);
     }
 
-    private static Double isNumeric(String data){
+    private static Double isNumeric(String s){
         Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
-        if(pattern.matcher(data).matches()){
-            return Double.parseDouble(data);
+        if(pattern.matcher(s).matches()){
+            return Double.parseDouble(s);
         }
         return null;
     }
 
-    private static MatrixUtil isMatrix(String data) throws TooBigMatrixException {
-        if(data.length() <= 3 || data.charAt(0) != '[' || data.charAt(data.length()-1) != ']' || !data.contains("/")) return null;
-
-        for(int i = 1; i < data.length()-1; i++){
-            if(data.charAt(i) != ',' && data.charAt(i) != '/' && isNumeric(Character.toString(data.charAt(i))) == null){
+    private static MatrixUtil isMatrix(String s) throws TooBigMatrixException {
+        if(s.length() <= 3 || s.charAt(0) != '[' || s.charAt(s.length()-1) != ']' || !s.contains("/")) return null;
+       // s = removeSquareBrackets(s);
+        for(int i = 1; i < s.length()-1; i++){
+            if(s.charAt(i) != ',' && s.charAt(i) != '/' && isNumeric(Character.toString(s.charAt(i))) == null && s.charAt(i) != '.'){
                 return null;
             }
         }
-        return getMatrixFromString(data);
+        return getMatrixFromString(s);
     }
 
     private static MatrixUtil getMatrixFromString(String s) throws TooBigMatrixException {
@@ -150,15 +150,15 @@ public class Main {
         return new MatrixUtil(matrixData);
     }
 
-    private static VectorUtil isVector(String data) throws TooBigVectorExeption {
-        if(data.length() <= 2 || data.charAt(0) != '[' || data.charAt(data.length()-1) != ']') return null;
+    private static VectorUtil isVector(String s) throws TooBigVectorExeption {
+        if(s.length() <= 2 || s.charAt(0) != '[' || s.charAt(s.length()-1) != ']') return null;
 
-        for(int i = 1; i < data.length()-1; i++){
-            if(data.charAt(i) != ',' && isNumeric(Character.toString(data.charAt(i))) == null){
+        for(int i = 1; i < s.length()-1; i++){
+            if(s.charAt(i) != ',' && isNumeric(Character.toString(s.charAt(i))) == null && s.charAt(i) != '.'){
                 return null;
             }
         }
-        return getVectorFromString(data);
+        return getVectorFromString(s);
     }
 
     private static VectorUtil getVectorFromString(String s) throws TooBigVectorExeption {
