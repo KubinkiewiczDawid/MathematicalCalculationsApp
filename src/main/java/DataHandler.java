@@ -23,7 +23,7 @@ public class DataHandler {
             }else{
                 fileNumberText = fileNumberText.replace(".", "");
                 int indexOfNumber = fileNameBuilder.indexOf(fileNumberText);
-                fileNameBuilder.deleteCharAt(indexOfNumber);
+                fileNameBuilder.delete(indexOfNumber, fileNameBuilder.length());
                 fileNameBuilder.append(Integer.parseInt(fileNumberText) + 1);
             }
             this.logFile = new File(fileNameBuilder.toString());
